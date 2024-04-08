@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Hello2</h1>
+    <a href="first/test1">first/test1</a> <br/>
+    <a href="first/test2">first/test2</a> <br/>
+    <a href="first/test3">first/test3</a> <br/>
+    <a href="first/test4">first/test4</a> <br/>
+
+    <a href="second/test1">second/test1</a> <br/>
+    <a href="second/test2">second/test2</a> <br/>
+    <a href="second/loop">제품정보</a><br />
+
+    <a th:href="@{~/home}" th:title="${title}">home</a>
+
+    <a href="third/test1">third/test1</a><br />
+
+    <a href="four/test1">third/test1</a><br />
+
+    <script src="http://code.jquery.com/jquery-latest.js"></script>
+    <script>
+        $.ajax({
+            url:"four/test1",
+            Method:"Get",
+            success:function(data){
+                console.log(data);
+            }
+        });
+    </script>
+</body>
+</html>
