@@ -29,7 +29,8 @@ public class StudentController {
 
     // http://localhost:8088/student/detail/7 이런식으로 검색 /번호
     @RequestMapping("student/detail")
-    public String detail(Model model, @RequestParam("id") Integer id) {
+    //public String detail(Model model, @RequestParam("id") Integer id) {
+    public String detail(Model model, Integer id) {
         if (id == null) id = 4;
         model.addAttribute("student", studentMapper.findById(id));
         return "student/detail";
