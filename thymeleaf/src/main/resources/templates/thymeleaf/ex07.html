@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout=http://www.ultraq.net.nz/thymeleaf/layout
+      layout:decorate="~{layouts/layout1}">
+
+<div layout:fragment="content">
+    본문 영역입니다.
+</div>
+
+<!-- 사용자 CSS 추가 -->
+<th:block layout:fragment="css">
+    <style>
+        footer{
+            div{
+                background:gold;
+            }
+        }
+    </style>
+</th:block>
+
+<!-- 사용자 스크립트 추가 -->
+<th:block layout:fragment="userScript">
+    <script th:inline="javascript">
+        var content=document.getElementsByClassName("content")[0];
+        content.style.padding="20px";
+
+        var message=[[${msg}]];
+        alert("Message : " + message);
+    </script>
+</th:block>
+
+</html>
