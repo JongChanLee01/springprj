@@ -11,7 +11,7 @@ import java.util.List;
 public interface DepartmentMapper {
     @ResultMap("findAll")
     @Select("""
-        SELECT d.*, s.studentNo, s.name, s.phone, s.sex, s.email
+        SELECT d.*, s.studentNo, s.name, s.phone studentPhone, s.sex, s.email
         FROM department d JOIN student s
         ON d.id = s.departmentId
     """)

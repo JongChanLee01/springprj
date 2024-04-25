@@ -7,8 +7,10 @@
     <resultMap id="findAll" type="com.resultMap3.dto.Department" autoMapping="true">
         <id property="id" column="id" />
         <result property="name" column="departmentName" />
+
         <collection property="students" ofType="com.resultMap3.dto.Student" autoMapping="true">
             <id property="id" column="departmentId" />
+            <result property="phone" column="studentPhone" />
         </collection>
     </resultMap>
 

@@ -24,7 +24,7 @@
     <div>
       <span>부서명 : ${ department.name } </span>
       <span>부서아이디 : ${ department.id } </span>
-      <span>이메일: ${ department.phone }</span>
+      <span>부서 번호: ${ department.phone }</span>
       <span>shortName: ${ department.shortName}</span>
     </div>
     <table>
