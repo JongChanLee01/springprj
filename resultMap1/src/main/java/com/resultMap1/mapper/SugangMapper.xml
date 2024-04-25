@@ -4,24 +4,35 @@
 
 <mapper namespace="com.resultMap1.mapper.SugangMapper">
 
-    <resultMap id="findAll" type="com.resultMap1.dto.Sugang">
-        <id property="id" column="id" />
-        <result property="lectureId" column="lectureId" />
-        <result property="studentId" column="studentId" />
-        <result property="repeated" column="repeated" />
-        <result property="cancel" column="cancel" />
-        <result property="grade" column="grade" />
-        <association property="lecture" javaType="com.resultMap1.dto.Lecture">
+<!-- 개선 후-->
+    <resultMap id="findAll" type="com.resultMap1.dto.Sugang" autoMapping="true">
+        <association property="lecture" javaType="com.resultMap1.dto.Lecture" autoMapping="true">
             <id property="id" column="studentId" />
-            <result property="title" column="title" />
-            <result property="year" column="year" />
-            <result property="semester" column="semester" />
         </association>
-        <association property="student" javaType="com.resultMap1.dto.Student">
+        <association property="student" javaType="com.resultMap1.dto.Student" autoMapping="true">
             <id property="id" column="lectureId" />
-            <result property="studentNo" column="studentNo" />
-            <result property="name" column="name" />
         </association>
     </resultMap>
+
+<!-- 개선 전-->
+    <!--    <resultMap id="findAll" type="com.resultMap1.dto.Sugang">-->
+<!--        <id property="id" column="id" />-->
+<!--        <result property="lectureId" column="lectureId" />-->
+<!--        <result property="studentId" column="studentId" />-->
+<!--        <result property="repeated" column="repeated" />-->
+<!--        <result property="cancel" column="cancel" />-->
+<!--        <result property="grade" column="grade" />-->
+<!--        <association property="lecture" javaType="com.resultMap1.dto.Lecture">-->
+<!--            <id property="id" column="studentId" />-->
+<!--            <result property="title" column="title" />-->
+<!--            <result property="year" column="year" />-->
+<!--            <result property="semester" column="semester" />-->
+<!--        </association>-->
+<!--        <association property="student" javaType="com.resultMap1.dto.Student">-->
+<!--            <id property="id" column="lectureId" />-->
+<!--            <result property="studentNo" column="studentNo" />-->
+<!--            <result property="name" column="name" />-->
+<!--        </association>-->
+<!--    </resultMap>-->
 
 </mapper>
