@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.resultMap1.mapper.StudentMapper">
+    <resultMap id="findAll" type="com.resultMap1.dto.Student" autoMapping="true">
+        <association property="department" javaType="com.resultMap1.dto.Department" autoMapping="true">
+            <id property="id" column="departmentId" />
+            <!-- phone은 student와 department와 중복이 되므로 autuMapping이라도 따로 설정을 해주어야한다 -->
+            <result property="phone" column="departmentPhone" />
+        </association>
+    </resultMap>
+</mapper>

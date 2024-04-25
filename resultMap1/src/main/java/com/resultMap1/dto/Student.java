@@ -11,4 +11,6 @@ public class Student {
     String phone;
     String sex;
     String email;
+
+    Department department;
 }

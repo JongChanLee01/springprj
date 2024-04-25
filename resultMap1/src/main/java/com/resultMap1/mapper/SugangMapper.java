@@ -2,6 +2,7 @@ package com.resultMap1.mapper;
 
 import java.util.List;
 
+import com.resultMap1.dto.Student;
 import com.resultMap1.dto.Sugang;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.ResultMap;
