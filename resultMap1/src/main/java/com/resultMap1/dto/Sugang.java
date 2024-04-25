@@ -11,10 +11,15 @@ public class Sugang {
     boolean cancel;
     String grade;
 
-    String studentNo;
-    String name;
 
-    String title;
-    int year;
-    String semester;
+    // student와 lecture 정보를 포함해서 조회해야 하므로 추가함
+    Lecture lecture;
+    Student student;
+    
+    // String studentNo;
+    // String name;
+    //
+    // String title;
+    // int year;
+    // String semester;
 }

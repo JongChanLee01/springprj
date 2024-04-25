@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.resultMap1.mapper.SugangMapper">
+
+    <resultMap id="findAll" type="com.resultMap1.dto.Sugang">
+        <id property="id" column="id" />
+        <result property="lectureId" column="lectureId" />
+        <result property="studentId" column="studentId" />
+        <result property="repeated" column="repeated" />
+        <result property="cancel" column="cancel" />
+        <result property="grade" column="grade" />
+        <association property="lecture" javaType="com.resultMap1.dto.Lecture">
+            <id property="id" column="studentId" />
+            <result property="title" column="title" />
+            <result property="year" column="year" />
+            <result property="semester" column="semester" />
+        </association>
+        <association property="student" javaType="com.resultMap1.dto.Student">
+            <id property="id" column="lectureId" />
+            <result property="studentNo" column="studentNo" />
+            <result property="name" column="name" />
+        </association>
+    </resultMap>
+
+</mapper>

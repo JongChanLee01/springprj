@@ -34,11 +34,11 @@
       <c:forEach var="sugang" items="${ sugangs }">
         <tr>
           <td>${ sugang.id }</td>
-          <td>${ sugang.studentNo }</td>
-          <td>${ sugang.name }</td>
-          <td>${ sugang.title }</td>
-          <td>${ sugang.year }</td>
-          <td>${ sugang.semester }</td>
+          <td>${ sugang.student.studentNo }</td>
+          <td>${ sugang.student.name }</td>
+          <td>${ sugang.lecture.title }</td>
+          <td>${ sugang.lecture.year }</td>
+          <td>${ sugang.lecture.semester }</td>
           <td>${ sugang.grade }</td>
           <td>${ sugang.repeated }</td>
           <td>${ sugang.cancel }</td>
