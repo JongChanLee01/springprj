@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.resultMap3.mapper.DepartmentMapper">
+
+    <resultMap id="findAll" type="com.resultMap3.dto.Department" autoMapping="true">
+        <id property="id" column="id" />
+        <result property="name" column="departmentName" />
+        <collection property="students" ofType="com.resultMap3.dto.Student" autoMapping="true">
+            <id property="id" column="departmentId" />
+        </collection>
+    </resultMap>
+
+</mapper>
