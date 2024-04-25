@@ -10,5 +10,7 @@ public class Lecture {
     int year;
     String semester;
     String room;
+
+    Professor professor;
 }
 
