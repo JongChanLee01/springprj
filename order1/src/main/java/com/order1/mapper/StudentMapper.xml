@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.order1.mapper.StudentMapper">
+
+    <select id="findAll" resultType="com.order1.dto.Student">
+        SELECT s.*, d.name departmentName
+        FROM student s JOIN department d ON s.departmentId = d.id
+        ORDER BY
+        <if test="order == 0">s.studentNo ASC</if>
+        <if test="order == 1">s.studentNo DESC</if>
+        <if test="order == 2">s.name ASC</if>
+        <if test="order == 3">s.name DESC</if>
+        <if test="order == 4">d.name ASC</if>
+    </select>
+</mapper>
