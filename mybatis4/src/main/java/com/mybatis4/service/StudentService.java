@@ -1,6 +1,8 @@
 package com.mybatis4.service;
 
 import java.util.List;
+
+import com.mybatis4.model.Pagination;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,16 +26,24 @@ public class StudentService {
         return studentMapper.findByStudentNo(studentNo);
     }
 
-    public List<Student> findAll() {
-        return studentMapper.findAll();
+    // public List<Student> findAll() {
+    //     return studentMapper.findAll();
+    // }
+    public List<Student> findAll(Pagination pagination) {
+        pagination.setRecordCount(studentMapper.getCount());
+        return studentMapper.findAll(pagination);
     }
 
+
     public void insert(StudentEdit studentEdit,
-                       BindingResult bindingResult) throws Exception {
+                       BindingResult bindingResult, Pagination pagination) throws Exception {
         if (hasErrors(studentEdit, bindingResult))
             throw new Exception("입력 데이터 오류");
         Student student = toDto(studentEdit);
         studentMapper.insert(student);
+
+        int lastPage = (int)Math.ceil((double)studentMapper.getCount() / pagination.getSz());
+        pagination.setPg(lastPage);
     }
 
     public void update(StudentEdit studentEdit,

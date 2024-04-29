@@ -1,6 +1,8 @@
 package com.mybatis4.controller;
 
 import java.util.List;
+
+import com.mybatis4.model.Pagination;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,14 +25,15 @@ public class StudentController {
     @Autowired DepartmentService departmentService;
 
     @GetMapping("list")
-    public String list(Model model) {
-        List<Student> students = studentService.findAll();
+    public String list(Model model, Pagination pagination) {
+        // List<Student> students = studentService.findAll();
+        List<Student> students = studentService.findAll(pagination);
         model.addAttribute("students", students);
         return "student/list";
     }
 
     @GetMapping("create")
-    public String create(Model model) {
+    public String create(Model model, Pagination pagination) {
         StudentEdit studentEdit = new StudentEdit();
         List<Department> departments = departmentService.findAll();
         model.addAttribute("studentEdit", studentEdit);
@@ -40,10 +43,11 @@ public class StudentController {
 
     @PostMapping("create")
     public String create(Model model,
-                         @Valid StudentEdit studentEdit, BindingResult bindingResult) {
+                         @Valid StudentEdit studentEdit, BindingResult bindingResult, Pagination pagination) {
         try {
-            studentService.insert(studentEdit, bindingResult);
-            return "redirect:list";
+            studentService.insert(studentEdit, bindingResult, pagination);
+            return "redirect:list?" + pagination.getQueryString();
+            // return "redirect:list";
         }
         catch (Exception e) {
             model.addAttribute("departments", departmentService.findAll());
@@ -53,7 +57,7 @@ public class StudentController {
     }
 
     @GetMapping("edit")
-    public String edit(Model model, int id) {
+    public String edit(Model model, int id, Pagination pagination) {
         StudentEdit studentEdit = studentService.findOne(id);
         List<Department> departments = departmentService.findAll();
         model.addAttribute("studentEdit", studentEdit);
@@ -66,10 +70,11 @@ public class StudentController {
 
     @PostMapping(value="edit", params="cmd=save")
     public String edit(Model model,
-                       @Valid StudentEdit studentEdit, BindingResult bindingResult) {
+                       @Valid StudentEdit studentEdit, BindingResult bindingResult, Pagination pagination) {
         try {
             studentService.update(studentEdit, bindingResult);
-            return "redirect:list";
+            return "redirect:list?" + pagination.getQueryString();
+            //return "redirect:list";
         }
         catch (Exception e) {
             model.addAttribute("departments", departmentService.findAll());
@@ -79,11 +84,12 @@ public class StudentController {
     }
 
     @PostMapping(value="edit", params="cmd=delete")
-    public String delete(Model model,
+    public String delete(Model model, Pagination pagination,
                          StudentEdit studentEdit, BindingResult bindingResult) {
         try {
             studentService.delete(studentEdit.getId());
-            return "redirect:list";
+            return "redirect:list?" + pagination.getQueryString();
+            //return "redirect:list";
         }
         catch (Exception e) {
             model.addAttribute("departments", departmentService.findAll());

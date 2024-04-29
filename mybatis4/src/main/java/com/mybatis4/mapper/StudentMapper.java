@@ -1,6 +1,8 @@
 package com.mybatis4.mapper;
 
 import java.util.List;
+
+import com.mybatis4.model.Pagination;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
@@ -19,10 +21,20 @@ public interface StudentMapper {
     @Select("SELECT * FROM student WHERE studentNo = #{studentNo}")
     Student findByStudentNo(String studentNo);
 
+    // @Select("""
+    //     SELECT s.*, d.departmentName departmentName
+    //     FROM student s LEFT JOIN department d ON s.departmentId = d.id """)
+    // List<Student> findAll();
     @Select("""
-        SELECT s.*, d.departmentName departmentName
-        FROM student s LEFT JOIN department d ON s.departmentId = d.id """)
-    List<Student> findAll();
+            SELECT s.*, d.departmentName departmentName
+            FROM student s LEFT JOIN department d ON s.departmentId = d.id
+            ORDER BY s.id
+            LIMIT #{firstRecordIndex}, #{sz} """)
+    List<Student> findAll(Pagination pagination);
+
+    @Select("SELECT COUNT(id) FROM student")
+    int getCount();
+
 
     @Insert("""
         INSERT student (studentNo, name, departmentId, phone, sex, email)
