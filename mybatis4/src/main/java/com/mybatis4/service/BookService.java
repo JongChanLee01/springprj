@@ -3,7 +3,7 @@ package com.mybatis4.service;
 import com.mybatis4.dto.Book;
 import com.mybatis4.mapper.BookMapper;
 import com.mybatis4.model.BookEdit;
-import com.mybatis4.model.Pagination;
+import com.mybatis4.model.Pagination2;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,21 +27,21 @@ public class BookService {
     //     return bookMapper.findByCategoryId(categoryId);
     // }
 
-    public List<Book> findAll(Pagination pagination) {
-        pagination.setRecordCount(bookMapper.getCount());
-        return bookMapper.findAll(pagination);
+    public List<Book> findAll(Pagination2 pagination2) {
+        pagination2.setRecordCount(bookMapper.getCount());
+        return bookMapper.findAll(pagination2);
     }
 
 
     public void insert(BookEdit bookEdit,
-                       BindingResult bindingResult, Pagination pagination) throws Exception {
+                       BindingResult bindingResult, Pagination2 pagination2) throws Exception {
         if (hasErrors(bookEdit, bindingResult))
             throw new Exception("입력 데이터 오류");
         Book book = toDto(bookEdit);
         bookMapper.insert(book);
 
-        int lastPage = (int)Math.ceil((double)bookMapper.getCount() / pagination.getSz());
-        pagination.setPg(lastPage);
+        int lastPage = (int)Math.ceil((double)bookMapper.getCount() / pagination2.getSz());
+        pagination2.setPg(lastPage);
     }
 
     public void update(BookEdit bookEdit,

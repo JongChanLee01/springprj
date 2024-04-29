@@ -2,7 +2,7 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
-    <link rel="stylesheet" type="text/css" href="/common.css" />
+    <link rel="stylesheet" type="text/css" href="/common2.css" />
     <script type="text/javascript" src="/common.js"></script>
     <style>
         a.btn { float: right; margin-top: -40px; }
@@ -11,7 +11,7 @@
 <body>
 <div class="container">
     <h1>도서목록</h1>
-    <a th:href="${ 'create?' + pagination.queryString }" class="btn">도서등록</a>
+    <a th:href="${ 'create?' + pagination2.queryString }" class="btn">도서등록</a>
     <table class="list">
         <thead>
         <tr>
@@ -25,7 +25,7 @@
         </thead>
         <tbody>
         <tr th:each="bk : ${ books }"
-            th:href="${ 'edit?id=' + bk.id + '&' + pagination.queryString }"
+            th:href="${ 'edit?id=' + bk.id + '&' + pagination2.queryString }"
             onclick="onClickHref(event)">
             <td th:text="${ bk.id }"></td>
             <td th:text="${ bk.title }"></td>

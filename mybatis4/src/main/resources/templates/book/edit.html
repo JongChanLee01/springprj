@@ -2,7 +2,7 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
-    <link rel="stylesheet" type="text/css" href="/common.css" />
+    <link rel="stylesheet" type="text/css" href="/common2.css" />
     <style>
         form { width: 600px; margin: auto; padding: 5px 20px; box-shadow: 2px 2px 5px gray; }
         div.table { display: table; }
@@ -67,7 +67,7 @@
                     onclick="return confirm('삭제하시겠습니까?')"
                     name="cmd" value="delete">삭제</button>
             <!--<a href="list" class="btn">목록으로</a>-->
-            <a th:href="${ 'list?' + pagination.queryString }" class="btn">목록으로</a>
+            <a th:href="${ 'list?' + pagination2.queryString }" class="btn">목록으로</a>
         </div>
         <div class="error" th:errors="${bookEdit}"></div>
     </form>

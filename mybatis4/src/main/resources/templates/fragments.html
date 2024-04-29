@@ -4,7 +4,7 @@
 
 <table class="pagination" th:fragment="pagination">
     <tr>
-        <td th:each="page : ${ pagination.pages }" th:class="${ page.active ? 'active' : '' }">
+        <td th:each="page : ${ pagination2.pages }" th:class="${ page.active ? 'active' : '' }">
             <a th:href="${ page.url }" th:text="${ page.label }"></a>
         </td>
     </tr>

@@ -1,0 +1,65 @@
+package com.mybatis4.model;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.List;
+
+@Data
+public class Pagination2 {
+    int pg = 1;        // 현재 페이지 번호
+    int sz = 15;       // 페이지 당 레코드 수
+    int recordCount;   // 전체 레코드 수
+    String url;        // 목록 페이지 url
+    String st = "";    // 검색 문자열
+
+    public int getFirstRecordIndex() {
+        return (pg - 1) * sz;
+    }
+
+    public String getQueryString() {
+        try {
+            String encoded = URLEncoder.encode(st, "UTF-8");
+            return String.format("pg=%d&sz=%d&st=%s", pg, sz, encoded);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+
+
+        return String.format("pg=%d&sz=%d&st=%s", pg, sz, st);
+    }
+
+    public List<Page2> getPages() {
+        List<Page2> pages = new ArrayList<Page2>();
+        int pageCount = (int)Math.ceil((float)recordCount / sz);
+        if (pg > pageCount) pg = pageCount;
+        if (url.indexOf("pg=") < 0)
+            url = url + (url.indexOf("?") < 0 ? "?" : "&") + "pg=1";
+        int baseNo = (pg - 1) / 10 * 10;
+        if (baseNo > 0)
+            pages.add(new Page2("<", false, url.replaceAll("pg=[0-9]+", "pg=" + baseNo)));
+        for (int i = 1; i <= 10; ++i) {
+            int no = baseNo + i;
+            if (no > pageCount) break;
+            pages.add(new Page2(String.valueOf(no), no == pg,
+                    url.replaceAll("pg=[0-9]+", "pg=" + no)));
+        }
+        int no = baseNo + 11;
+        if (no <= pageCount)
+            pages.add(new Page2(">", false, url.replaceAll("pg=[0-9]+", "pg=" + no)));
+        return pages;
+    }
+
+}
+@Data
+@AllArgsConstructor
+class Page2 {
+    String label;
+    boolean active;
+    String url;
+}
+
+

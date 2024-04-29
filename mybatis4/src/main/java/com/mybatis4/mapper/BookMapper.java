@@ -1,8 +1,7 @@
 package com.mybatis4.mapper;
 
 import com.mybatis4.dto.Book;
-import com.mybatis4.dto.Student;
-import com.mybatis4.model.Pagination;
+import com.mybatis4.model.Pagination2;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
@@ -21,7 +20,7 @@ public interface BookMapper {
             ORDER BY b.id
             LIMIT #{firstRecordIndex}, #{sz}
             """)
-    List<Book> findAll(Pagination pagination);
+    List<Book> findAll(Pagination2 pagination2);
 
     @Select("SELECT COUNT(id) FROM book")
     int getCount();
@@ -31,7 +30,7 @@ public interface BookMapper {
         INSERT book (title, author, categoryId, price, publisher)
         VALUES (#{title}, #{author}, #{categoryId}, #{price}, #{publisher}) 
         """)
-    @Options(useGeneratedKeys=true, keyProperty="id")
+    @Options(useGeneratedKeys=false, keyProperty="id")
     void insert(Book book);
 
     @Update("""
