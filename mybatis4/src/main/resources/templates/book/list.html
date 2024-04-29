@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" href="/common.css" />
+    <script type="text/javascript" src="/common.js"></script>
+    <style>
+        a.btn { float: right; margin-top: -40px; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>도서목록</h1>
+    <a th:href="${ 'create?' + pagination.queryString }" class="btn">도서등록</a>
+    <table class="list">
+        <thead>
+        <tr>
+            <th>id</th>
+            <th>제목</th>
+            <th>저자</th>
+            <th>카테고리</th>
+            <th>가격</th>
+            <th>출판사</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="bk : ${ books }"
+            th:href="${ 'edit?id=' + bk.id + '&' + pagination.queryString }"
+            onclick="onClickHref(event)">
+            <td th:text="${ bk.id }"></td>
+            <td th:text="${ bk.title }"></td>
+            <td th:text="${ bk.author }"></td>
+            <td th:text="${ bk.bookCategory }"></td>
+            <td th:text="${ bk.price }"></td>
+            <td th:text="${ bk.publisher }"></td>
+        </tr>
+        </tbody>
+    </table>
+    <div th:replace="~{fragments::pagination}"></div>
+
+</div>
+</body>
+</html>
+

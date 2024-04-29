@@ -30,7 +30,8 @@ public class StudentService {
     //     return studentMapper.findAll();
     // }
     public List<Student> findAll(Pagination pagination) {
-        pagination.setRecordCount(studentMapper.getCount());
+        // pagination.setRecordCount(studentMapper.getCount());
+        pagination.setRecordCount(studentMapper.getCount(pagination));
         return studentMapper.findAll(pagination);
     }
 
@@ -42,7 +43,8 @@ public class StudentService {
         Student student = toDto(studentEdit);
         studentMapper.insert(student);
 
-        int lastPage = (int)Math.ceil((double)studentMapper.getCount() / pagination.getSz());
+        // int lastPage = (int)Math.ceil((double)studentMapper.getCount() / pagination.getSz());
+        int lastPage = (int)Math.ceil((double)studentMapper.getCount(pagination) / pagination.getSz());
         pagination.setPg(lastPage);
     }
 

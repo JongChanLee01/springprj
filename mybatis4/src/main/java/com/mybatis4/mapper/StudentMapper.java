@@ -28,12 +28,29 @@ public interface StudentMapper {
     @Select("""
             SELECT s.*, d.departmentName departmentName
             FROM student s LEFT JOIN department d ON s.departmentId = d.id
+            
+            WHERE #{st} = '' OR
+                  s.studentNo = #{st} OR
+                  s.name LIKE CONCAT('%', #{st}, '%') OR
+                  d.departmentName LIKE CONCAT('%', #{st}, '%')
             ORDER BY s.id
-            LIMIT #{firstRecordIndex}, #{sz} """)
+            LIMIT #{firstRecordIndex}, #{sz} 
+            """)
     List<Student> findAll(Pagination pagination);
 
-    @Select("SELECT COUNT(id) FROM student")
-    int getCount();
+
+
+    // @Select("SELECT COUNT(id) FROM student")
+    // int getCount();
+    @Select("""
+            SELECT COUNT(*)
+            FROM student s LEFT JOIN department d ON s.departmentId = d.id
+            WHERE #{st} = '' OR
+              s.studentNo = #{st} OR
+              s.name LIKE CONCAT('%', #{st}, '%') OR
+              d.departmentName LIKE CONCAT('%', #{st}, '%') """)
+    int getCount(Pagination pagination);
+
 
 
     @Insert("""
