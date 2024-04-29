@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<table class="pagination" th:fragment="pagination">
+    <tr>
+        <td th:each="page : ${ pagination.pages }" th:class="${ page.active ? 'active' : '' }">
+            <a th:href="${ page.url }" th:text="${ page.label }"></a>
+        </td>
+    </tr>
+</table>
+
+</body>
+</html>

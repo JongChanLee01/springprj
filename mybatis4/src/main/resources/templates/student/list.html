@@ -8,7 +8,9 @@
         a.btn { float: right; margin-top: -40px; }
     </style>
 </head>
-<body onload="pagination()">
+<!-- common.js에 let div = document.getElementsByClassName("pagination")[0]; 를 불러오는 것 -->
+<!--<body onload="pagination()">-->
+<body>
 <div class="container">
     <h1>학생목록</h1>
     <!--<a href="create" class="btn">학생등록</a>-->
@@ -42,8 +44,22 @@
         </tr>
         </tbody>
     </table>
-    <div class="pagination" th:data-record-count="${pagination.recordCount}"
-         th:data-page-size="${pagination.sz}" th:data-current-page="${pagination.pg}"></div>
+<!--    <div class="pagination" th:data-record-count="${pagination.recordCount}"-->
+<!--         th:data-page-size="${pagination.sz}" th:data-current-page="${pagination.pg}"></div>-->
+    <!-- student폴더 밖에있는 fragments.html 불러와서 씀 -->
+    <div th:replace="~{fragments::pagination}"></div>
+
+
+    <!-- 아래 코드를 밖으로 빼서 여러곳에서 재사용 -->
+    <!--
+    <table class="pagination">
+        <tr>
+            <td th:each="page : ${ pagination.pages }" th:class="${ page.active ? 'active' : '' }">
+                <a th:href="${ page.url }" th:text="${ page.label }"></a>
+            </td>
+        </tr>
+    </table>
+    -->
 </div>
 </body>
 </html>

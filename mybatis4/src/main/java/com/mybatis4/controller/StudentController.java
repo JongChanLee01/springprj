@@ -3,6 +3,8 @@ package com.mybatis4.controller;
 import java.util.List;
 
 import com.mybatis4.model.Pagination;
+import jakarta.servlet.http.HttpServletRequest;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,6 +19,7 @@ import com.mybatis4.model.StudentEdit;
 import com.mybatis4.service.DepartmentService;
 import com.mybatis4.service.StudentService;
 
+@Slf4j
 @Controller
 @RequestMapping("student")
 public class StudentController {
@@ -25,8 +28,12 @@ public class StudentController {
     @Autowired DepartmentService departmentService;
 
     @GetMapping("list")
-    public String list(Model model, Pagination pagination) {
+    public String list(Model model, Pagination pagination, HttpServletRequest request) {
         // List<Student> students = studentService.findAll();
+
+        log.info("get URL {} ", request.getRequestURL());
+
+        pagination.setUrl(request.getRequestURL().toString());
         List<Student> students = studentService.findAll(pagination);
         model.addAttribute("students", students);
         return "student/list";
