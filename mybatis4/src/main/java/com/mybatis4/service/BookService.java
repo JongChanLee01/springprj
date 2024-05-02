@@ -4,6 +4,7 @@ import com.mybatis4.dto.Book;
 import com.mybatis4.mapper.BookMapper;
 import com.mybatis4.model.BookEdit;
 import com.mybatis4.model.Pagination2;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,6 +12,7 @@ import org.springframework.validation.BindingResult;
 
 import java.util.List;
 
+@Slf4j
 @Service
 public class BookService {
     @Autowired
