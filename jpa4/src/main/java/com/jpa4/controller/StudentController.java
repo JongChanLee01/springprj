@@ -2,11 +2,16 @@ package com.jpa4.controller;
 
 import com.jpa4.entity.Department;
 import com.jpa4.entity.Student;
+import com.jpa4.model.StudentEdit;
 import com.jpa4.repository.DepartmentRepository;
 import com.jpa4.repository.StudentRepository;
+import com.jpa4.service.DepartmentService;
+import com.jpa4.service.StudentService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,13 +20,22 @@ import java.util.List;
 
 @Controller
 public class StudentController {
+    // repository는 validation에서는 안씀
     @Autowired
     StudentRepository studentRepository;
+    
     @Autowired
     DepartmentRepository departmentRepository;
+    
+    @Autowired
+    StudentService studentService;
+
+    @Autowired
+    DepartmentService departmentService;
 
     @RequestMapping("student/test1")
     public String test1(Model model){
+        // Student student = studentRepository.findByStudentNo("201732008");
         Student student = studentRepository.findByStudentNo("201732008");
         model.addAttribute("students", student);
         return "student/list";
@@ -89,37 +103,81 @@ public class StudentController {
 
     @GetMapping("student/create")
     public String create(Model model) {
-        Student student = new Student();
-        List<Department> departments = departmentRepository.findAll();
-        model.addAttribute("student", student);
+        // Student student = new Student();
+        StudentEdit studentEdit = new StudentEdit();
+
+        // List<Department> departments = departmentRepository.findAll();
+        List<Department> departments = departmentService.findAll();
+
+        // model.addAttribute("student", student);
+        model.addAttribute("studentEdit", studentEdit);
+
         model.addAttribute("departments", departments);
         return "student/edit";
     }
 
+    // @PostMapping("student/create")
+    // public String create(Model model, Student student) {
+    //     studentRepository.save(student);
+    //     return "redirect:list";
+    // }
     @PostMapping("student/create")
-    public String create(Model model, Student student) {
-        studentRepository.save(student);
+    public String create(Model model, @Valid StudentEdit studentEdit, BindingResult bindingResult) {
+        if(bindingResult.hasErrors()){
+            model.addAttribute("department", departmentService.findAll());
+            return "student/edit";
+        }
+        Student student2 = studentService.findByStudentNo(studentEdit.getStudentNo());
+        
+        if (student2 != null) {
+            bindingResult.rejectValue("studentNo", null, "학번이 중복됩니다.");
+            model.addAttribute("departments", departmentService.findAll());
+            return "student/edit";
+        }
+        studentService.insert(studentEdit);
         return "redirect:list";
     }
 
     @GetMapping("student/edit")
     public String edit(Model model, int id) {
-        Student student = studentRepository.findById(id).get();
-        List<Department> departments = departmentRepository.findAll();
-        model.addAttribute("student", student);
+        // Student student = studentRepository.findById(id).get();
+        StudentEdit studentEdit = studentService.findOne(id);
+
+        // List<Department> departments = departmentRepository.findAll();
+        List<Department> departments = departmentService.findAll();
+        // model.addAttribute("student", student);
+        model.addAttribute("studentEdit", studentEdit);
         model.addAttribute("departments", departments);
         return "student/edit";
     }
 
+    // @PostMapping("student/edit")
+    // public String edit(Model model, Student student) {
+    //     studentRepository.save(student);
+    //     return "redirect:list";
+    // }
     @PostMapping("student/edit")
-    public String edit(Model model, Student student) {
-        studentRepository.save(student);
+    public String edit(Model model,
+                       @Valid StudentEdit studentEdit, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("departments", departmentService.findAll());
+            return "student/edit";
+        }
+        Student student2 = studentService.findByStudentNo(studentEdit.getStudentNo());
+        if (student2 != null && student2.getId() != studentEdit.getId()) {
+            bindingResult.rejectValue("studentNo", null, "학번이 중복됩니다.");
+            model.addAttribute("departments", departmentService.findAll());
+            return "student/edit";
+        }
+        studentService.update(studentEdit);
         return "redirect:list";
     }
 
+
     @GetMapping("student/delete")
     public String delete(Model model, int id) {
-        studentRepository.deleteById(id);
+        // studentRepository.deleteById(id);
+        studentService.delete(id);
         return "redirect:list";
     }
 

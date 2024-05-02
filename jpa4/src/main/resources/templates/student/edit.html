@@ -12,44 +12,54 @@
 </head>
 <body>
 <div class="container">
-    <form method="post" th:object="${student}">
-        <h1 th:text="${student.id > 0 ? '학생 수정' : '학생 등록'}"></h1>
+<!--    <form method="post" th:object="${student}">-->
+    <form method="post" th:object="${studentEdit}">
+        <h1 th:text="${studentEdit.id > 0 ? '학생 수정' : '학생 등록'}"></h1>
         <table>
             <tr>
                 <td>학번:</td>
                 <td><input type="text" th:field="*{studentNo}" /></td>
+                <div class="error" th:errors="*{studentNo}"></div>
             </tr>
             <tr>
                 <td>이름:</td>
                 <td><input type="text" th:field="*{name}" /></td>
+                <div class="error" th:errors="*{name}"></div>
             </tr>
             <tr>
                 <td>학과:</td>
                 <td>
-                    <select th:field="*{department.id}">
+<!--                    <select th:field="*{department.id}">-->
+                    <select th:field="*{departmentId}">
                         <option th:each="dt : ${ departments }"
                                 th:value="${ dt.id }" th:text="${ dt.name }">
                         </option>
                     </select>
+                    <div class="error" th:errors="*{departmentId}"></div>
                 </td>
             </tr>
             <tr>
                 <td>전화:</td>
                 <td><input type="text" th:field="*{phone}" /></td>
+                <div class="error" th:errors="*{phone}"></div>
             </tr>
             <tr>
                 <td>성별:</td>
                 <td><input type="text" th:field="*{sex}" /></td>
+                <div class="error" th:errors="*{sex}"></div>
             </tr>
             <tr>
                 <td>이메일:</td>
                 <td><input type="text" th:field="*{email}" /></td>
+                <div class="error" th:errors="*{email}"></div>
             </tr>
         </table>
         <hr />
         <div>
             <button type="submit" class="btn">저장</button>
-            <a th:if="${ student.id > 0 }" th:href="${ 'delete?id=' + student.id }"
+<!--            <a th:if="${ student.id > 0 }" th:href="${ 'delete?id=' + student.id }"-->
+<!--               class="btn" onclick="return confirm('삭제하시겠습니까?')">삭제</a>-->
+            <a th:if="${ studentEdit.id > 0 }" th:href="${ 'delete?id=' + studentEdit.id }"
                class="btn" onclick="return confirm('삭제하시겠습니까?')">삭제</a>
             <a href="list" class="btn">목록으로</a>
         </div>
