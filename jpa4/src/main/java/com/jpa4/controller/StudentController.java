@@ -1,10 +1,14 @@
 package com.jpa4.controller;
 
+import com.jpa4.entity.Department;
 import com.jpa4.entity.Student;
+import com.jpa4.repository.DepartmentRepository;
 import com.jpa4.repository.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
@@ -13,6 +17,8 @@ import java.util.List;
 public class StudentController {
     @Autowired
     StudentRepository studentRepository;
+    @Autowired
+    DepartmentRepository departmentRepository;
 
     @RequestMapping("student/test1")
     public String test1(Model model){
@@ -71,9 +77,50 @@ public class StudentController {
 
     @RequestMapping("student/list")
     public String list(Model model) {
-        List<Student> student = studentRepository.findAll();
+        // List<Student> student = studentRepository.findAll();
+        // 최신 아이디가 먼저 나오게 하기
+        List<Student> student = studentRepository.findAllByOrderByIdDesc();
+
+        // 학번으로 오름차순 정렬하기
+        // List<Student> student = studentRepository.findAllByOrderByStudentNo();
         model.addAttribute("students", student);
         return "student/list";
+    }
+
+    @GetMapping("student/create")
+    public String create(Model model) {
+        Student student = new Student();
+        List<Department> departments = departmentRepository.findAll();
+        model.addAttribute("student", student);
+        model.addAttribute("departments", departments);
+        return "student/edit";
+    }
+
+    @PostMapping("student/create")
+    public String create(Model model, Student student) {
+        studentRepository.save(student);
+        return "redirect:list";
+    }
+
+    @GetMapping("student/edit")
+    public String edit(Model model, int id) {
+        Student student = studentRepository.findById(id).get();
+        List<Department> departments = departmentRepository.findAll();
+        model.addAttribute("student", student);
+        model.addAttribute("departments", departments);
+        return "student/edit";
+    }
+
+    @PostMapping("student/edit")
+    public String edit(Model model, Student student) {
+        studentRepository.save(student);
+        return "redirect:list";
+    }
+
+    @GetMapping("student/delete")
+    public String delete(Model model, int id) {
+        studentRepository.deleteById(id);
+        return "redirect:list";
     }
 
 
@@ -94,6 +141,27 @@ public class StudentController {
         model.addAttribute("students",
                 studentRepository.findBySugangsLectureTitle("자료구조"));
         return "student/list";
+    }
+
+
+    @RequestMapping("test1")
+    public List<Object[]> test11() {
+        return studentRepository.findSugangCount();
+    }
+
+    @RequestMapping("test2")
+    public List<Student> test12() {
+        return studentRepository.findByLectureTite("자료구조");
+    }
+
+    @RequestMapping("test3")
+    public List<Student> test13() {
+        return studentRepository.findByProfessorIdOrProfessorName(0, "이몽룡");
+    }
+
+    @RequestMapping("test4")
+    public List<Student> test14() {
+        return studentRepository.findByProfessorNameOrProfessorId(null, 13);
     }
 
 }
