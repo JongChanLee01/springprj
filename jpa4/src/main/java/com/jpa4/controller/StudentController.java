@@ -2,6 +2,7 @@ package com.jpa4.controller;
 
 import com.jpa4.entity.Department;
 import com.jpa4.entity.Student;
+import com.jpa4.model.Pagination;
 import com.jpa4.model.StudentEdit;
 import com.jpa4.repository.DepartmentRepository;
 import com.jpa4.repository.StudentRepository;
@@ -89,20 +90,41 @@ public class StudentController {
         return "student/list";
     }
 
+    // @RequestMapping("student/list")
+    // public String list(Model model) {
+    //     // List<Student> student = studentRepository.findAll();
+    //     // 최신 아이디가 먼저 나오게 하기
+    //     List<Student> student = studentRepository.findAllByOrderByIdDesc();
+    //
+    //     // 학번으로 오름차순 정렬하기
+    //     // List<Student> student = studentRepository.findAllByOrderByStudentNo();
+    //     model.addAttribute("students", student);
+    //     return "student/list";
+    // }
     @RequestMapping("student/list")
-    public String list(Model model) {
-        // List<Student> student = studentRepository.findAll();
-        // 최신 아이디가 먼저 나오게 하기
-        List<Student> student = studentRepository.findAllByOrderByIdDesc();
+    public String list(Model model, Pagination pagination) {
+        List<Student> student = studentService.findAll(pagination);
 
-        // 학번으로 오름차순 정렬하기
-        // List<Student> student = studentRepository.findAllByOrderByStudentNo();
         model.addAttribute("students", student);
         return "student/list";
     }
 
+    // @GetMapping("student/create")
+    // public String create(Model model) {
+    //     // Student student = new Student();
+    //     StudentEdit studentEdit = new StudentEdit();
+    //
+    //     // List<Department> departments = departmentRepository.findAll();
+    //     List<Department> departments = departmentService.findAll();
+    //
+    //     // model.addAttribute("student", student);
+    //     model.addAttribute("studentEdit", studentEdit);
+    //
+    //     model.addAttribute("departments", departments);
+    //     return "student/edit";
+    // }
     @GetMapping("student/create")
-    public String create(Model model) {
+    public String create(Model model, Pagination pagination) {
         // Student student = new Student();
         StudentEdit studentEdit = new StudentEdit();
 
@@ -116,13 +138,15 @@ public class StudentController {
         return "student/edit";
     }
 
+
     // @PostMapping("student/create")
     // public String create(Model model, Student student) {
     //     studentRepository.save(student);
     //     return "redirect:list";
     // }
     @PostMapping("student/create")
-    public String create(Model model, @Valid StudentEdit studentEdit, BindingResult bindingResult) {
+    // public String create(Model model, @Valid StudentEdit studentEdit, BindingResult bindingResult) {
+    public String create(Model model, Pagination pagination, @Valid StudentEdit studentEdit, BindingResult bindingResult) {
 
         // if(bindingResult.hasErrors()){
         //     model.addAttribute("department", departmentService.findAll());
@@ -145,8 +169,10 @@ public class StudentController {
         // return "redirect:list";
 
         try {
-            studentService.insert(studentEdit, bindingResult);
-            return "redirect:list";
+            // studentService.insert(studentEdit, bindingResult);
+            // return "redirect:list";
+            studentService.insert(studentEdit, bindingResult, pagination);
+            return "redirect:list?" + pagination.getQueryString();
         }
         catch (Exception e) {
             model.addAttribute("departments", departmentService.findAll());
@@ -157,7 +183,8 @@ public class StudentController {
     }
 
     @GetMapping("student/edit")
-    public String edit(Model model, int id) {
+    // public String edit(Model model, int id) {
+    public String edit(Model model, int id, Pagination pagination) {
         // Student student = studentRepository.findById(id).get();
         StudentEdit studentEdit = studentService.findOne(id);
 
@@ -176,7 +203,9 @@ public class StudentController {
     // }
     // @PostMapping("student/edit")
     @PostMapping(value = "student/edit", params = "cmd=save")
-    public String edit(Model model,
+    // public String edit(Model model,
+    //                    @Valid StudentEdit studentEdit, BindingResult bindingResult) {
+    public String edit(Model model, Pagination pagination,
                        @Valid StudentEdit studentEdit, BindingResult bindingResult) {
         // if (bindingResult.hasErrors()) {
         //     model.addAttribute("departments", departmentService.findAll());
@@ -200,7 +229,8 @@ public class StudentController {
 
         try {
             studentService.update(studentEdit, bindingResult);
-            return "redirect:list";
+            // return "redirect:list";
+            return "redirect:list?" + pagination.getQueryString();
         }
         catch (Exception e) {
             model.addAttribute("departments", departmentService.findAll());
@@ -217,11 +247,14 @@ public class StudentController {
     //     return "redirect:list";
     // }
     @PostMapping(value="student/edit", params="cmd=delete")
-    public String delete(Model model,
-                         StudentEdit studentEdit, BindingResult bindingResult) {
+    // public String delete(Model model,
+    //                      StudentEdit studentEdit, BindingResult bindingResult) {
+    public String delete(Model model, Pagination pagination,
+            StudentEdit studentEdit, BindingResult bindingResult) {
         try {
             studentService.delete(studentEdit.getId());
-            return "redirect:list";
+            // return "redirect:list";
+            return "redirect:list?" + pagination.getQueryString();
         }
         catch (Exception e) {
             model.addAttribute("departments", departmentService.findAll());

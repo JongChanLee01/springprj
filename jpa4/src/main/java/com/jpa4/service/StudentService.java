@@ -2,10 +2,14 @@ package com.jpa4.service;
 
 import com.jpa4.entity.Department;
 import com.jpa4.entity.Student;
+import com.jpa4.model.Pagination;
 import com.jpa4.model.StudentEdit;
 import com.jpa4.repository.StudentRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 
@@ -27,22 +31,44 @@ public class StudentService {
         return studentRepository.findByStudentNo(studentNo);
     }
 
-    public List<Student> findAll() {
-        return studentRepository.findAll();
+    // public List<Student> findAll() {
+    //     return studentRepository.findAll();
+    // }
+    public List<Student> findAll(Pagination pagination) {
+        PageRequest pageRequest = PageRequest.of(pagination.getPg() - 1,
+                pagination.getSz(),
+                Sort.Direction.ASC, "id");
+        Page<Student> page = studentRepository.findAll(pageRequest);
+        pagination.setRecordCount((int)page.getTotalElements());
+        return page.getContent();
     }
+
+
 
     // public void insert(StudentEdit studentEdit) {
     //     // Student student = toEntity(studentEdit);
     //     Student student = toDto(studentEdit);
     //     studentRepository.save(student);
     // }
-    public void insert(StudentEdit studentEdit,
-                       BindingResult bindingResult) throws Exception {
+
+    // public void insert(StudentEdit studentEdit,
+    //                    BindingResult bindingResult) throws Exception {
+    //     if (hasErrors(studentEdit, bindingResult))
+    //         throw new Exception("입력 데이터 오류");
+    //     Student student = toDto(studentEdit);
+    //     studentRepository.save(student);
+    // }
+
+    public void insert(StudentEdit studentEdit, BindingResult bindingResult,
+                       Pagination pagination) throws Exception {
         if (hasErrors(studentEdit, bindingResult))
             throw new Exception("입력 데이터 오류");
         Student student = toDto(studentEdit);
         studentRepository.save(student);
+        int lastPage = (int)Math.ceil((double)studentRepository.count() / pagination.getSz());
+        pagination.setPg(lastPage);
     }
+
 
 
     // public void update(StudentEdit studentEdit) {

@@ -80,7 +80,8 @@
                     name="cmd" value="delete">삭제
             </button>
 
-            <a href="list" class="btn">목록으로</a>
+<!--            <a href="list" class="btn">목록으로</a>-->
+            <a th:href="${ 'list?' + pagination.queryString }" class="btn">목록으로</a>
         </div>
         <div class="error" th:errors="${studentEdit}"></div>
     </form>
