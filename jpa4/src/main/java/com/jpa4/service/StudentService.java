@@ -31,17 +31,35 @@ public class StudentService {
         return studentRepository.findByStudentNo(studentNo);
     }
 
+
+
     // public List<Student> findAll() {
     //     return studentRepository.findAll();
     // }
+
+    // public List<Student> findAll(Pagination pagination) {
+    //     PageRequest pageRequest = PageRequest.of(pagination.getPg() - 1,
+    //             pagination.getSz(),
+    //             Sort.Direction.ASC, "id");
+    //     Page<Student> page = studentRepository.findAll(pageRequest);
+    //     pagination.setRecordCount((int)page.getTotalElements());
+    //     return page.getContent();
+    // }
+
     public List<Student> findAll(Pagination pagination) {
         PageRequest pageRequest = PageRequest.of(pagination.getPg() - 1,
                 pagination.getSz(),
                 Sort.Direction.ASC, "id");
-        Page<Student> page = studentRepository.findAll(pageRequest);
+        Page<Student> page;
+        if (pagination.getSt().length() == 0)
+            page = studentRepository.findAll(pageRequest);
+        else
+            page = studentRepository.findByStudentNoOrNameStartsWithOrDepartmentNameStartsWith(
+                    pagination.getSt(), pagination.getSt(), pagination.getSt(), pageRequest);
         pagination.setRecordCount((int)page.getTotalElements());
         return page.getContent();
     }
+
 
 
 

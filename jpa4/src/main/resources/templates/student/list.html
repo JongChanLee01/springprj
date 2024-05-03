@@ -5,17 +5,24 @@
     <link rel="stylesheet" type="text/css" th:href="@{/common.css}" />
     <script type="text/javascript" src="/common.js"></script>
     <style>
-        form { margin-bottom: 4px; }
-        a.btn { float: right; margin-top: -40px; }
+
     </style>
 </head>
 <!--<body>-->
-<!--<body onload="pagination()">-->
-<body>
+<body onload="pagination()">
 <div class="container">
     <h1>학생목록</h1>
 <!--    <a href="create" class="btn">학생등록</a>-->
-    <a th:href="${ 'create?' + pagination.queryString }" class="btn">학생등록</a>
+<!--    <a th:href="${ 'create?' + pagination.queryString }" class="btn">학생등록</a>-->
+
+    <form method="get" th:object="${pagination}">
+        <input type="hidden" name="pg" value="1" />
+        <input type="text" th:field="*{st}" placeholder="검색" />
+        <button type="submit" class="btn">검색</button>
+        <a href="list" class="btn">취소</a>
+        <a th:href="${ 'create?' + pagination.queryString }" class="btn blue">학생등록</a>
+    </form>
+
     <table class="list">
         <thead>
         <tr>
@@ -67,8 +74,8 @@
                 </tr>
         </tbody>
     </table>
-<!--    <div class="pagination" th:data-record-count="${pagination.recordCount}"-->
-<!--         th:data-page-size="${pagination.sz}" th:data-current-page="${pagination.pg}"></div>-->
+    <div class="pagination" th:data-record-count="${pagination.recordCount}"
+         th:data-page-size="${pagination.sz}" th:data-current-page="${pagination.pg}"></div>
 
 <!--    <table class="pagination">-->
 <!--        <tr>-->
@@ -78,7 +85,7 @@
 <!--        </tr>-->
 <!--    </table>-->
 
-    <div th:replace="~{fragments::pagination}"></div>
+<!--    <div th:replace="~{fragments::pagination}"></div>-->
 </div>
 </body>
 </html>

@@ -1,6 +1,9 @@
 package com.jpa4.repository;
 
 import java.util.List;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import com.jpa4.entity.Student;
 import org.springframework.data.jpa.repository.Query;
@@ -25,6 +28,10 @@ public interface StudentRepository extends JpaRepository<Student, Integer>  {
 
     // 학번으로 오름차순 정렬하기
     List<Student> findAllByOrderByStudentNo();
+
+
+    Page<Student> findByStudentNoOrNameStartsWithOrDepartmentNameStartsWith(
+            String studentNo, String name, String departmentName, Pageable pageable);
 
 
     @Query("SELECT s.studentNo, s.name, SIZE(s.sugangs) FROM Student s ORDER BY SIZE(s.sugangs) DESC")
