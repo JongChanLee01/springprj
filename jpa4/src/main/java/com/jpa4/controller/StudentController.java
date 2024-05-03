@@ -8,6 +8,7 @@ import com.jpa4.repository.DepartmentRepository;
 import com.jpa4.repository.StudentRepository;
 import com.jpa4.service.DepartmentService;
 import com.jpa4.service.StudentService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -101,13 +102,24 @@ public class StudentController {
     //     model.addAttribute("students", student);
     //     return "student/list";
     // }
-    @RequestMapping("student/list")
-    public String list(Model model, Pagination pagination) {
-        List<Student> student = studentService.findAll(pagination);
 
-        model.addAttribute("students", student);
+    // @RequestMapping("student/list")
+    // public String list(Model model, Pagination pagination) {
+    //     List<Student> student = studentService.findAll(pagination);
+    //
+    //     model.addAttribute("students", student);
+    //     return "student/list";
+    // }
+
+    @GetMapping("student/list")
+    public String list(Model model, Pagination pagination, HttpServletRequest request) {
+        pagination.setUrl(request.getRequestURL().toString());
+        List<Student> students = studentService.findAll(pagination);
+        model.addAttribute("students", students);
         return "student/list";
     }
+
+
 
     // @GetMapping("student/create")
     // public String create(Model model) {

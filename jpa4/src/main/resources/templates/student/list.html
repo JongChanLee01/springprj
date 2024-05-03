@@ -10,7 +10,8 @@
     </style>
 </head>
 <!--<body>-->
-<body onload="pagination()">
+<!--<body onload="pagination()">-->
+<body>
 <div class="container">
     <h1>학생목록</h1>
 <!--    <a href="create" class="btn">학생등록</a>-->
@@ -66,8 +67,18 @@
                 </tr>
         </tbody>
     </table>
-    <div class="pagination" th:data-record-count="${pagination.recordCount}"
-         th:data-page-size="${pagination.sz}" th:data-current-page="${pagination.pg}"></div>
+<!--    <div class="pagination" th:data-record-count="${pagination.recordCount}"-->
+<!--         th:data-page-size="${pagination.sz}" th:data-current-page="${pagination.pg}"></div>-->
+
+<!--    <table class="pagination">-->
+<!--        <tr>-->
+<!--            <td th:each="page : ${ pagination.pages }" th:class="${ page.active ? 'active' : '' }">-->
+<!--                <a th:href="${ page.url }" th:text="${ page.label }"></a>-->
+<!--            </td>-->
+<!--        </tr>-->
+<!--    </table>-->
+
+    <div th:replace="~{fragments::pagination}"></div>
 </div>
 </body>
 </html>
