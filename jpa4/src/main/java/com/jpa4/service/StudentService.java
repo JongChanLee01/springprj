@@ -31,17 +31,33 @@ public class StudentService {
         return studentRepository.findAll();
     }
 
-    public void insert(StudentEdit studentEdit) {
-        // Student student = toEntity(studentEdit);
+    // public void insert(StudentEdit studentEdit) {
+    //     // Student student = toEntity(studentEdit);
+    //     Student student = toDto(studentEdit);
+    //     studentRepository.save(student);
+    // }
+    public void insert(StudentEdit studentEdit,
+                       BindingResult bindingResult) throws Exception {
+        if (hasErrors(studentEdit, bindingResult))
+            throw new Exception("입력 데이터 오류");
         Student student = toDto(studentEdit);
         studentRepository.save(student);
     }
 
-    public void update(StudentEdit studentEdit) {
-        // Student student = toEntity(studentEdit);
+
+    // public void update(StudentEdit studentEdit) {
+    //     // Student student = toEntity(studentEdit);
+    //     Student student = toDto(studentEdit);
+    //     studentRepository.save(student);
+    // }
+    public void update(StudentEdit studentEdit,
+                       BindingResult bindingResult) throws Exception {
+        if (hasErrors(studentEdit, bindingResult))
+            throw new Exception("입력 데이터 오류");
         Student student = toDto(studentEdit);
         studentRepository.save(student);
     }
+
 
     public void delete(int id) {
         studentRepository.deleteById(id);

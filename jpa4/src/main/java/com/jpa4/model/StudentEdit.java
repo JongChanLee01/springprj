@@ -27,6 +27,7 @@ public class StudentEdit {
     @Pattern(regexp="남|여", message = "남, 여 중 하나를 입력하세요.")
     String sex;
 
+    @Min(value=1, message="학과를 선택하세요.")
     int departmentId;
 
 }

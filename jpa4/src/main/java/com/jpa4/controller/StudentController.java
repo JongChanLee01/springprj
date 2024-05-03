@@ -136,13 +136,24 @@ public class StudentController {
         //     return "student/edit";
         // }
 
-        if (studentService.hasErrors(studentEdit, bindingResult)) {
+        // if (studentService.hasErrors(studentEdit, bindingResult)) {
+        //     model.addAttribute("departments", departmentService.findAll());
+        //     return "student/edit";
+        // }
+        //
+        // studentService.insert(studentEdit);
+        // return "redirect:list";
+
+        try {
+            studentService.insert(studentEdit, bindingResult);
+            return "redirect:list";
+        }
+        catch (Exception e) {
             model.addAttribute("departments", departmentService.findAll());
+            bindingResult.rejectValue("", null, "등록할 수 없습니다.");
             return "student/edit";
         }
 
-        studentService.insert(studentEdit);
-        return "redirect:list";
     }
 
     @GetMapping("student/edit")
@@ -163,7 +174,8 @@ public class StudentController {
     //     studentRepository.save(student);
     //     return "redirect:list";
     // }
-    @PostMapping("student/edit")
+    // @PostMapping("student/edit")
+    @PostMapping(value = "student/edit", params = "cmd=save")
     public String edit(Model model,
                        @Valid StudentEdit studentEdit, BindingResult bindingResult) {
         // if (bindingResult.hasErrors()) {
@@ -176,23 +188,48 @@ public class StudentController {
         //     model.addAttribute("departments", departmentService.findAll());
         //     return "student/edit";
         // }
-        if (studentService.hasErrors(studentEdit, bindingResult)) {
+
+        // if (studentService.hasErrors(studentEdit, bindingResult)) {
+        //     model.addAttribute("departments", departmentService.findAll());
+        //     return "student/edit";
+        // }
+        //
+        //
+        // studentService.update(studentEdit);
+        // return "redirect:list";
+
+        try {
+            studentService.update(studentEdit, bindingResult);
+            return "redirect:list";
+        }
+        catch (Exception e) {
             model.addAttribute("departments", departmentService.findAll());
+            bindingResult.rejectValue("", null, "수정할 수 없습니다.");
             return "student/edit";
         }
-
-
-        studentService.update(studentEdit);
-        return "redirect:list";
     }
 
 
-    @GetMapping("student/delete")
-    public String delete(Model model, int id) {
-        // studentRepository.deleteById(id);
-        studentService.delete(id);
-        return "redirect:list";
+    // @GetMapping("student/delete")
+    // public String delete(Model model, int id) {
+    //     // studentRepository.deleteById(id);
+    //     studentService.delete(id);
+    //     return "redirect:list";
+    // }
+    @PostMapping(value="student/edit", params="cmd=delete")
+    public String delete(Model model,
+                         StudentEdit studentEdit, BindingResult bindingResult) {
+        try {
+            studentService.delete(studentEdit.getId());
+            return "redirect:list";
+        }
+        catch (Exception e) {
+            model.addAttribute("departments", departmentService.findAll());
+            bindingResult.rejectValue("", null, "삭제할 수 없습니다.");
+            return "student/edit";
+        }
     }
+
 
 
     // 교수
