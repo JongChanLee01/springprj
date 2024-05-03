@@ -123,17 +123,24 @@ public class StudentController {
     // }
     @PostMapping("student/create")
     public String create(Model model, @Valid StudentEdit studentEdit, BindingResult bindingResult) {
-        if(bindingResult.hasErrors()){
-            model.addAttribute("department", departmentService.findAll());
-            return "student/edit";
-        }
-        Student student2 = studentService.findByStudentNo(studentEdit.getStudentNo());
-        
-        if (student2 != null) {
-            bindingResult.rejectValue("studentNo", null, "학번이 중복됩니다.");
+
+        // if(bindingResult.hasErrors()){
+        //     model.addAttribute("department", departmentService.findAll());
+        //     return "student/edit";
+        // }
+        // Student student2 = studentService.findByStudentNo(studentEdit.getStudentNo());
+        //
+        // if (student2 != null) {
+        //     bindingResult.rejectValue("studentNo", null, "학번이 중복됩니다.");
+        //     model.addAttribute("departments", departmentService.findAll());
+        //     return "student/edit";
+        // }
+
+        if (studentService.hasErrors(studentEdit, bindingResult)) {
             model.addAttribute("departments", departmentService.findAll());
             return "student/edit";
         }
+
         studentService.insert(studentEdit);
         return "redirect:list";
     }
@@ -159,16 +166,22 @@ public class StudentController {
     @PostMapping("student/edit")
     public String edit(Model model,
                        @Valid StudentEdit studentEdit, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
+        // if (bindingResult.hasErrors()) {
+        //     model.addAttribute("departments", departmentService.findAll());
+        //     return "student/edit";
+        // }
+        // Student student2 = studentService.findByStudentNo(studentEdit.getStudentNo());
+        // if (student2 != null && student2.getId() != studentEdit.getId()) {
+        //     bindingResult.rejectValue("studentNo", null, "학번이 중복됩니다.");
+        //     model.addAttribute("departments", departmentService.findAll());
+        //     return "student/edit";
+        // }
+        if (studentService.hasErrors(studentEdit, bindingResult)) {
             model.addAttribute("departments", departmentService.findAll());
             return "student/edit";
         }
-        Student student2 = studentService.findByStudentNo(studentEdit.getStudentNo());
-        if (student2 != null && student2.getId() != studentEdit.getId()) {
-            bindingResult.rejectValue("studentNo", null, "학번이 중복됩니다.");
-            model.addAttribute("departments", departmentService.findAll());
-            return "student/edit";
-        }
+
+
         studentService.update(studentEdit);
         return "redirect:list";
     }
