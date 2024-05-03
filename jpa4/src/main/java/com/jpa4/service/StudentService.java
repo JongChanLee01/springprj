@@ -5,6 +5,8 @@ import com.jpa4.entity.Student;
 import com.jpa4.model.Pagination;
 import com.jpa4.model.StudentEdit;
 import com.jpa4.repository.StudentRepository;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -17,10 +19,38 @@ import java.util.List;
 
 @Service
 public class StudentService {
+    @Data
+    @AllArgsConstructor
+    public static class Order {
+        int value;
+        String label;
+    }
+
+    static Order[] orders = new Order[] {
+            new Order(0, "정렬 순서"),
+            new Order(1, "학번 오름차순"),
+            new Order(2, "학번 내림차순"),
+            new Order(3, "이름 오름차순"),
+            new Order(4, "학과 오름차순")
+    };
+
+    static Sort[] sorts = new Sort[] {
+            Sort.by(Sort.Direction.ASC, "id"),
+            Sort.by(Sort.Direction.ASC, "studentNo"),
+            Sort.by(Sort.Direction.DESC, "studentNo"),
+            Sort.by(Sort.Direction.ASC, "name"),
+            Sort.by(Sort.Direction.ASC, "department.name"),
+    };
+
+
     @Autowired
     StudentRepository studentRepository;
 
     ModelMapper modelMapper = new ModelMapper();
+
+    public Order[] getOrders() {
+        return orders;
+    }
 
     public StudentEdit findOne(int id) {
         Student studentEntity = studentRepository.findById(id).get();
@@ -47,9 +77,14 @@ public class StudentService {
     // }
 
     public List<Student> findAll(Pagination pagination) {
+        int orderIndex = pagination.getOd();
+
+        // PageRequest pageRequest = PageRequest.of(pagination.getPg() - 1,
+        //         pagination.getSz(), Sort.Direction.ASC, "id");
         PageRequest pageRequest = PageRequest.of(pagination.getPg() - 1,
-                pagination.getSz(),
-                Sort.Direction.ASC, "id");
+                pagination.getSz(), sorts[orderIndex]);
+
+
         Page<Student> page;
         if (pagination.getSt().length() == 0)
             page = studentRepository.findAll(pageRequest);
@@ -83,6 +118,10 @@ public class StudentService {
             throw new Exception("입력 데이터 오류");
         Student student = toDto(studentEdit);
         studentRepository.save(student);
+
+        pagination.setSt("");
+        pagination.setOd(0);
+
         int lastPage = (int)Math.ceil((double)studentRepository.count() / pagination.getSz());
         pagination.setPg(lastPage);
     }

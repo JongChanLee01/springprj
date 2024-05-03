@@ -17,6 +17,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -116,6 +117,9 @@ public class StudentController {
         pagination.setUrl(request.getRequestURL().toString());
         List<Student> students = studentService.findAll(pagination);
         model.addAttribute("students", students);
+
+        model.addAttribute("orders", studentService.getOrders());
+
         return "student/list";
     }
 
@@ -196,7 +200,8 @@ public class StudentController {
 
     @GetMapping("student/edit")
     // public String edit(Model model, int id) {
-    public String edit(Model model, int id, Pagination pagination) {
+    // public String edit(Model model, int id, Pagination pagination) {
+    public String edit(Model model, @RequestParam("id") int id, Pagination pagination) {
         // Student student = studentRepository.findById(id).get();
         StudentEdit studentEdit = studentService.findOne(id);
 

@@ -17,6 +17,12 @@
 
     <form method="get" th:object="${pagination}">
         <input type="hidden" name="pg" value="1" />
+        <select th:field="*{od}">
+            <option th:each="order : ${ orders }"
+                    th:value="${ order.value }" th:text="${ order.label }">
+            </option>
+        </select>
+
         <input type="text" th:field="*{st}" placeholder="검색" />
         <button type="submit" class="btn">검색</button>
         <a href="list" class="btn">취소</a>
