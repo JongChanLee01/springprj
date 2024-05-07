@@ -41,6 +41,7 @@ public class SpringSecurity {
         return http.build();
     }
 
+    // defaultSuccessUrl("/user/redirect", true)
     // false는 보안 컨텍스를 유지하지 않는다. 로그인상태유지
     // true는 보안 컨텍스를 유지한다
 
