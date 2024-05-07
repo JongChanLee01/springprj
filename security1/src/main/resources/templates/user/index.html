@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" href="/common.css" />
+    <style>
+        div.box { padding: 30px; }
+        table { border-collapse: collapse; width: 400px; margin-bottom: 20px; }
+        td { border: 1px solid #aaa; padding: 8px; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="box">
+        <h1>사용자 페이지</h1>
+        <table>
+            <tr>
+                <td>로그인ID</td>
+                <td th:text="${#authentication.principal.username}"></td>
+            </tr>
+            <tr>
+                <td>이름</td>
+                <td th:text="${#authentication.principal.name}"></td>
+            </tr>
+            <tr>
+                <td>이메일</td>
+                <td th:text="${#authentication.principal.email}"></td>
+            </tr>
+            <tr>
+                <td>권한</td>
+                <td th:text="${#authentication.principal.userType}"></td>
+            </tr>
+        </table>
+
+        <p>[[${#authentication.principal.username}]]님 안녕하세요</p>
+        <span th:text="${username}"></span>님으로 로그인하셨습니다.
+        <a class="btn" href="/logout_processing">로그아웃</a>
+        <hr>
+        <a class="btn" href="/professor/index">교수 페이지1</a>
+        <a class="btn" href="/user/professor_only">교수 페이지2</a>
+        <a class="btn" href="/admin/index">관리자 페이지1</a>
+        <a class="btn" href="/user/admin_only">관리자 페이지2</a>
+
+        <div sec:authorize="hasRole('ROLE_ADMIN')">
+            관리자만 보이는 내용
+        </div>
+
+        <div sec:authorize="hasRole('ROLE_PROFESSOR')">
+            교수만 보이는 내용
+        </div>
+
+        <div>모든 사용자에게 보이는 내용</div>
+
+    </div>
+</div>
+</body>
+</html>
