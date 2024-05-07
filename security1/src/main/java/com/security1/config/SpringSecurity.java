@@ -42,7 +42,7 @@ public class SpringSecurity {
     }
 
     // defaultSuccessUrl("/user/redirect", true)
-    // false는 보안 컨텍스를 유지하지 않는다. 로그인상태유지
+    // false는 보안 컨텍스(로그인상태유지)를 유지하지 않는다. 로그인상태유지
     // true는 보안 컨텍스를 유지한다
 
     @Bean
