@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html
+        xmlns:th="http://www.thymeleaf.org"
+        xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<body>
+
+<div class="main-menu" th:fragment="main-menu">
+    <div>
+        <h1>소프 게시판</h1>
+        <a th:href="@{/}">메인</a>
+        <span sec:authorize="!isAuthenticated()" class="right">
+      <a th:href="@{/login}">로그인</a>
+      <a th:href="@{/signUp}">회원 가입</a>
+    </span>
+        <span sec:authorize="isAuthenticated()" class="right">
+      <a href="#">
+        <span th:text="${#authentication.principal.name}"></span>
+      </a>
+      <a th:href="@{/logout_processing}">로그아웃</a>
+    </span>
+    </div>
+</div>
+
+<div class="footer" th:fragment="footer">
+    <div style="float: left; padding-right: 20px;">
+        <img th:src="@{/images/skhu.png}" style="width: 200px; "/>
+    </div>
+    <div>152-716 서울시 구로구 연동로 320 / 지하철 1, 7호선 온수(성공회대입구)역 T.02-2610-4114</div>
+    <div style="margin-top: 5px;">Copyright (c) Sung-Kong-Hoe Univisity. All rights reserved.</div>
+</div>
+
+</body>
+</html>

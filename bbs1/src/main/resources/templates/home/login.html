@@ -1,0 +1,68 @@
+<!DOCTYPE HTML>
+<html
+        xmlns:th="http://www.thymeleaf.org"
+        xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="utf-8">
+    <title>소프 게시판</title>
+    <link rel="stylesheet"  th:href="@{/css/common.css}" />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" />
+    <style>
+        div.container { padding-top: 100px; }
+        div.login-form {
+          width: 800px; padding-bottom: 1em;
+          background-color: #dee;
+          margin: 0px auto 200px auto; text-align: center;
+          border: 1px solid #ddd; border-radius: 5px;
+          box-shadow: 3px 3px 3px #ccc;
+        }
+        div.login-form h1 {
+          margin: 0; font-size: 14pt; font-weight: bold;
+          background:linear-gradient(90deg, #def, #bcd); padding: 10px 15px 7px 15px;
+        }
+        div.login-form img {
+          display: block; margin: 40px auto;
+        }
+        div.login-form input { padding: 12px; margin-bottom: 7px; width: 250px;
+            border: 2px solid #dee; border-radius: 8px; }
+        div.login-form input:focus { border: 2px solid #aaf; outline: none; }
+        div.login-form .btn { margin-top: 10px; padding: 0.7em 2em; }
+        div.login-form input { padding: 0.7em 3em; }
+        div.input { position: relative; display: inline-block; }
+        div.input i { position: absolute; left: 0.7em; top: 0.7em; color: #ccc; }
+        div.error { background-color: #fdd; margin: 1em 1em 0 1em; padding: 1em;
+        }
+    </style>
+</head>
+<body>
+<div th:replace="~{fragments::main-menu}"></div>
+<div class="container">
+    <div class="login-form">
+        <h1 class="login-header">소프 게시판 로그인</h1>
+        <div class="login-body">
+            <img src="images/skhu_logo.png" style="width: 200px;" />
+            <form method="post" th:action="@{/login_processing}">
+                <div class="input">
+                    <i class="fa fa-user fa-lg"></i>
+                    <input type="text" name="loginName" placeholder="아이디" />
+                </div>
+                <br/>
+                <div class="input">
+                    <i class="fa fa-key fa-lg"></i>
+                    <input type="password" name="passwd" placeholder="비밀번호" /> <br/>
+                </div>
+                <br/>
+                <button type="submit" class="btn blue">
+                    <i class="fa fa-sign-in-alt"></i> 로그인
+                </button>
+                <a th:href="@{/signUp}" class="btn">
+                    <i class="fa fa-user-plus"></i> 회원가입
+                </a>
+            </form>
+            <div th:if="${param.error != null}" class="error">아이디 비밀번호가 일치하지 않습니다.</div>
+        </div>
+    </div>
+    <div th:replace="~{fragments::footer}"></div>
+</div>
+</body>
+</html>
