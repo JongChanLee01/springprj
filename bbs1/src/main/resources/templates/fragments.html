@@ -8,6 +8,9 @@
     <div>
         <h1>소프 게시판</h1>
         <a th:href="@{/}">메인</a>
+        <span sec:authorize="hasRole('ROLE_ADMIN')">
+          <a th:href="@{/user/list}">사용자 목록</a>
+        </span>
         <span sec:authorize="!isAuthenticated()" class="right">
       <a th:href="@{/login}">로그인</a>
       <a th:href="@{/signUp}">회원 가입</a>

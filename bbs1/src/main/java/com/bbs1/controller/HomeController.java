@@ -1,5 +1,6 @@
 package com.bbs1.controller;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,6 +12,7 @@ import jakarta.validation.Valid;
 import com.bbs1.model.UserSignUp;
 import com.bbs1.service.UserService;
 
+@Slf4j
 @Controller
 public class HomeController {
 
@@ -41,6 +43,7 @@ public class HomeController {
             userService.insert(userSignUp, bindingResult);
             return "redirect:signUpComplete";
         } catch (Exception ex) {
+            log.error("회원가입 에러", ex);
             bindingResult.rejectValue("", null, "등록할 수 없습니다.");
             return "home/signUp";
         }
