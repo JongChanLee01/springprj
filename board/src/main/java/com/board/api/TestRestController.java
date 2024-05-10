@@ -1,11 +1,13 @@
 package com.board.api;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
 
 @RestController
+@RequestMapping("/api") // 이렇게 api라고 표기해두는것이 좋음
 public class TestRestController {
     @GetMapping("hello3")
     public HashMap<String, String> hello3(){
