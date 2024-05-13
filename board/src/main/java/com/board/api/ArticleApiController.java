@@ -31,10 +31,15 @@ public class ArticleApiController {
     }
 
     @PostMapping("/api/articles")
-    public Article create(@RequestBody ArticleForm dto){
+    public ResponseEntity create(@RequestBody ArticleForm dto){
         Article article = dto.toEntity(); // entity로 변환
 
-        return articleRepository.save(article);
+        // return articleRepository.save(article);
+        Article saved = articleRepository.save(article);
+
+        return ResponseEntity.status(HttpStatus.OK).body(saved);
+               // 200신호 보냄
+
         //localhost:8088/api/articles
     }
 }
