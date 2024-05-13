@@ -37,4 +37,10 @@ public class Article {
     //             ", content='" + content + '\'' +
     //             '}';
     // }
+
+    public void patch(Article article){
+        // 저장할때는 null이 아니면 저장하게끔 해야함
+        if(article.title != null) this.title = article.title;
+        if(article.content != null) this.content = article.content;
+    }
 }

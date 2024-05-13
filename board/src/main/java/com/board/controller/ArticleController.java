@@ -3,6 +3,8 @@ package com.board.controller;
 import com.board.dto.ArticleForm;
 import com.board.entity.Article;
 import com.board.repository.ArticleRepository;
+import com.board.service.ArticleService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,7 +22,7 @@ import java.util.List;
 public class ArticleController {
     @Autowired
     ArticleRepository articleRepository;
-    
+
     @GetMapping("/articles")
     public String index(Model model){
         // 아래처럼 강제 형변환을 해주거나 레퍼지토리에서 findAll을 새로 정의를 해준다.
