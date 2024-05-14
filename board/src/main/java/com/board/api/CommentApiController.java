@@ -2,18 +2,25 @@ package com.board.api;
 
 import com.board.dto.CommentDto;
 import com.board.entity.Comment;
+import com.board.repository.CommentRepository;
 import com.board.service.CommentService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Slf4j
 @RestController
 public class CommentApiController {
     @Autowired
     CommentService commentService;
+
+    @Autowired
+    CommentRepository commentRepository;
     
     // 댓글목록 조회
     @GetMapping("/api/articles/{articleId}/comments")
@@ -61,4 +68,15 @@ public class CommentApiController {
         return ResponseEntity.status(HttpStatus.OK).body(deletedDto);
     }
 
+
+    // 닉네임조회
+    @GetMapping("/api/articles/comments")
+    public ResponseEntity nicknameComments(@RequestParam String nickname, Model model) {
+
+        // 서비스단에 위임
+        List<CommentDto> commentDtos = commentService.apiNickNameComments(nickname);
+
+        // 보여줄 페이지를 설정
+        return ResponseEntity.status(HttpStatus.OK).body(commentDtos);
+    }
 }

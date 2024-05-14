@@ -1,0 +1,23 @@
+{{>layouts/header}}
+
+{{#commentDtos}}
+    <h2>
+        {{nickname}}님이 작성한 댓글 목록입니다.
+    </h2>
+    <div class="card m-2" id="comments-{{id}}">
+        <div class="card-header">
+            닉네임 : {{nickname}}
+        </div>
+        <div class="card-body">
+            내용 : {{body}}
+        </div>
+    </div>
+{{/commentDtos}}
+
+{{^commentDtos}}
+    닉네임이 존재하지 않습니다.
+{{/commentDtos}}
+
+<a href="/articles">Go to Article List</a>
+
+{{>layouts/footer}}

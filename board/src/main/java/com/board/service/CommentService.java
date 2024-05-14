@@ -88,4 +88,20 @@ public class CommentService {
         // 삭제 댓글을 DTO로 반환
         return CommentDto.createCommentDto(target);
     }
+
+    public List<Comment> nickNameComments(String nickname) {
+        List<Comment> comments = commentRepository.findByNickname(nickname);
+        return comments;
+    }
+
+
+    // api
+    public List<CommentDto> apiNickNameComments(String nickname) {
+        List<Comment> comments = commentRepository.findByNickname(nickname);
+
+        List<CommentDto> dtos = comments.stream()
+                .map(comment -> CommentDto.createCommentDto(comment))
+                .collect(Collectors.toList());
+        return dtos;
+    }
 }

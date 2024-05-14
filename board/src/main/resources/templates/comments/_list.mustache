@@ -1,3 +1,42 @@
+<form class="d-flex flex-row m-3" action="/articles/comments" method="get">
+    <label class="form-label m-1">닉네임</label>
+    <input type="text" class="form-control m-1 w-25" id="comment-nickname" name="nickname">
+    <button type="submit" class="btn btn-outline-primary m-1" id="nickname-btn">검색</button>
+</form>
+<!--<script>-->
+<!--    $('#nickname-btn').click(function(){-->
+<!--      console.log($('#comment-nickname').val());-->
+<!--        $.ajax({-->
+<!--            url:'/api/articles/comments/kim' ,-->
+<!--            method:"GET"-->
+<!--        })-->
+<!--    });-->
+<!--</script>-->
+<button type="submit" class="btn btn-outline-primary m-1" id="nickname-btn2">
+    AJAX 검색
+</button>
+
+<hr>
+<div id="out"></div>
+
+<script>
+    $("#nickname-btn2").on("click", function(){
+        var nickname = $("#comment-nickname").val();
+        var str="";
+        $.ajax({
+            url:"/api/articles/comments?nickname="+nickname,
+            method: "GET",
+            success: function(data){
+                var str = " ID : 별명 : 본문내용 ";
+                $(data).each(function(i,d){
+                    str += `<p> ${d.id} : ${d.nickname} : ${d.body} </p>`;
+                });
+                $("#out").html(str);
+            }
+        });
+    });
+</script>
+
 <div id="comments-list">
     {{#commentDtos}}
         <div class="card m-2" id="comments-{{id}}">
