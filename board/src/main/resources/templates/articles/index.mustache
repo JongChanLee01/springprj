@@ -25,5 +25,61 @@
         </tbody>
     </table>
     <a href="/articles/new" class="btn btn-primary">새글작성</a>
-</div>>
+</div>
+    <!-- 페이징 처리 UI를 구현 -->
+<div class="container mx-auto mt-2 text-center">
+    <nav aria-label="Page navigation example m-3">
+        <ul class="pagination">
+            {{#preStatus}}
+                <li class="page-item"><a class="page-link" href="/articles?pageNum={{preVious}}">Previous</a> </li>
+            {{/preStatus}}
+
+            {{#pageNums}}
+                <li class="page-item" aria-current="page"><a class="page-link active" href="/articles?pageNum={{.}}">{{.}}</a></li>
+            {{/pageNums}}
+
+            {{#nextStatus}}
+                <li class="page-item"><a class="page-link" href="/articles?pageNum={{next}}">Next</a> </li>
+            {{/nextStatus}}
+        </ul>
+    </nav>
+    {{pageNum}} Page
+</div>
+
 {{>layouts/footer}}
+
+
+<script>
+    /* function addActive(obj){
+     obj.classList.add("active");
+         return false;
+      }
+
+       for(var i=0;i<pageItem.length;i++){
+          pageItem[i].addEventListener('click',function(){
+        this.classList.add("active");
+       });
+    }
+    */
+
+      var pageItem=document.querySelectorAll('[aria-current="page"]');
+
+      const queryString = window.location.search;
+      const params = {};
+
+     queryString.substring(1).split('&').forEach(param => {
+        const [key, value] = param.split('=');
+         params[key] = value;
+    });
+
+    console.log(params); // { pageNum : 1 }
+
+    if(params.pageNum != undefined){
+         pageItem[params.pageNum].classList.add("active");
+    }else{
+      // params.pageNum=0;
+       // pageItem[params.pageNum].classList.add("active");
+         location.href="/articles?pageNum=1";
+    }
+
+</script>

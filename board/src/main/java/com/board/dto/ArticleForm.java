@@ -1,15 +1,13 @@
 package com.board.dto;
 
 import com.board.entity.Article;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 @AllArgsConstructor
 @ToString
 @NoArgsConstructor
 @Getter
+@Setter
 public class ArticleForm {
     private Long id;
     private String title;
