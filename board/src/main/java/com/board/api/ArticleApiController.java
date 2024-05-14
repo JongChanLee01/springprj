@@ -4,6 +4,7 @@ import com.board.dto.ArticleForm;
 import com.board.entity.Article;
 import com.board.repository.ArticleRepository;
 import com.board.service.ArticleService;
+import com.board.service.CommentService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,7 @@ import java.util.List;
 public class ArticleApiController {
     @Autowired
     ArticleRepository articleRepository;
+
 
     // 의존성 주입법
     //1)

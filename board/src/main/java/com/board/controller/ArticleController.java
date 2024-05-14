@@ -1,9 +1,11 @@
 package com.board.controller;
 
 import com.board.dto.ArticleForm;
+import com.board.dto.CommentDto;
 import com.board.entity.Article;
 import com.board.repository.ArticleRepository;
 import com.board.service.ArticleService;
+import com.board.service.CommentService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +24,9 @@ import java.util.List;
 public class ArticleController {
     @Autowired
     ArticleRepository articleRepository;
+
+    @Autowired
+    CommentService commentService;
 
     @GetMapping("/articles")
     public String index(Model model){
@@ -51,6 +56,8 @@ public class ArticleController {
         //return "redirect/articles/"+ saved.getId();
     }
 
+    
+    // 게시글 상세보기
     @GetMapping("/articles/{id}")
     // @PathVariable 경로 변수를 표시하기 위한 메서드의 매개변수에 사용
     public String show(@PathVariable long id, Model model){
@@ -61,8 +68,11 @@ public class ArticleController {
             }
         );
 
+        List<CommentDto> commentsDtos = commentService.comments(id);
+
         // 가져온 데이터를 모델에 등록
         model.addAttribute("article", articleEntity);
+        model.addAttribute("commentDtos", commentsDtos);
 
         //보여줄 페이지를 설정
 
