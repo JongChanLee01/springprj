@@ -1,0 +1,29 @@
+{{>layouts/header}}
+<table class="table">
+    <thead>
+    <tr>
+        <th scope="col">ID</th>
+        <th scope="col">사용자</th>
+        <th scope="col">Title</th>
+        <th scope="col">Content</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <th>{{board.id}}</th>
+        <th>{{board.username}}</th>
+        <td>{{board.title}}</td>
+        <td>{{board.content}}</td>
+    </tr>
+    </tbody>
+</table>
+<!--수정링크추가-->
+<a href="/board/{{board.id}}/edit" class="btn btn-success">수정</a>
+<!--삭제링크추가-->
+<a href="/board/{{board.id}}/delete"
+   class="btn btn-danger">삭제</a>
+
+<a href="/boards" class="btn btn-success">목록보기</a>
+
+
+{{>layouts/footer}}

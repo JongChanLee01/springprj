@@ -1,0 +1,31 @@
+{{>layouts/header}}
+<div class="container">
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">ID</th>
+            <th scope="col">사용자</th>
+            <th scope="col">Title</th>
+            <th scope="col">Content</th>
+        </tr>
+        </thead>
+        <tbody>
+
+        <!-- #boards은 BoardsController에
+        model.addAttribute("boards",boardList);
+        boards에 들어가있는 boardList를 가르킴  -->
+        {{#boards}}
+            <tr>
+                <th>{{id}}</th>
+
+                <!--제목에 링크 걸기-->
+                <td><a href="/board/{{id}}">{{title}}</a></td>
+                <td>{{content}}</td>
+            </tr>
+        {{/boards}}
+        </tbody>
+    </table>
+    <a href="/boards/new" class="btn btn-primary">새글작성</a>
+</div>
+
+{{>layouts/footer}}

@@ -3,6 +3,7 @@ package com.board.service;
 import com.board.dto.ArticleForm;
 import com.board.entity.Article;
 import com.board.repository.ArticleRepository;
+import com.board.repository.CommentRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -59,6 +60,7 @@ public class ArticleService {
         articleRepository.delete(target);
         return target;
     }
+
 
     @Transactional // transactional을 빼면 에러가 있든 없든 값은 저장됨
     public List<Article> createArticles(List<ArticleForm> dtos){

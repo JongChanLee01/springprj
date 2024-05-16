@@ -5,6 +5,7 @@ import com.board.entity.Article;
 import com.board.entity.Comment;
 import com.board.repository.ArticleRepository;
 import com.board.repository.CommentRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 public class CommentService {
     @Autowired
@@ -42,20 +44,45 @@ public class CommentService {
     }
 
 
+    // @Transactional
+    // public CommentDto create(Long articleId, CommentDto dto) {
+    //     Article article = articleRepository.findById(articleId).orElseThrow(()->
+    //            new IllegalArgumentException("댓글생성 실패! 대상 게시글이 없습니다.")
+    //     );
+    //
+    //     // dto -> 엔티티로 생성
+    //     Comment comment = Comment.createComment(dto, article);
+    //     Comment created = commentRepository.save(comment);
+    //
+    //     // 엔티티 -> dto로 변경
+    //     CommentDto createDto = CommentDto.createCommentDto(created);
+    //     return createDto;
+    // }
+
     @Transactional
     public CommentDto create(Long articleId, CommentDto dto) {
-        Article article = articleRepository.findById(articleId).orElseThrow(()->
-               new IllegalArgumentException("댓글생성 실패! 대상 게시글이 없습니다.")
-        );
-        
-        // dto -> 엔티티로 생성
+        log.info("입력값 => {}", articleId);
+        log.info("입력값 => {}", dto);
+
+
+        // 게시글 조회(혹은 예외 발생)
+        Article article = articleRepository.findById(articleId)
+                .orElseThrow(() -> new IllegalArgumentException("댓글 생성 실패! 대상 게시글이 없습니."));
+        // 댓글 엔티티 생성
         Comment comment = Comment.createComment(dto, article);
+        // 댓글 엔티티를 DB로 저장
         Comment created = commentRepository.save(comment);
-        
-        // 엔티티 -> dto로 변경
-        CommentDto createDto = CommentDto.createCommentDto(created);
-        return createDto;
+        // DTO로 변경하여 반환
+        //        return CommentDto.createCommentDto(created);
+        CommentDto createdDto = CommentDto.createCommentDto(created);
+
+
+        log.info("반환값 => {}", createdDto);
+
+
+        return createdDto;
     }
+
 
     @Transactional
     //@Transactional을 달면 엔티티에 변화가 있으면 알아서 레퍼지토리에 save를 실행한다.
@@ -70,7 +97,7 @@ public class CommentService {
         // Comment updated = commentRepository.save(target);
         // 엔티티에 변화가 있으면 알아서 레퍼지토리에 save를 실행.
         // @Transactional이것 때문에 그럼
-        
+
         // 댓글 엔티티를 DTO로 변환 및 반환
         // return CommentDto.createCommentDto(updated);
         return CommentDto.createCommentDto(target);
@@ -104,4 +131,5 @@ public class CommentService {
                 .collect(Collectors.toList());
         return dtos;
     }
+
 }

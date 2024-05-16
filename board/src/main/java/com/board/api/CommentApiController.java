@@ -69,14 +69,33 @@ public class CommentApiController {
     }
 
 
+    // AOP 적용 전
+    // 닉네임조회
+    // @GetMapping("/api/articles/comments")
+    // public ResponseEntity nicknameComments(@RequestParam String nickname, Model model) {
+    //
+    //     // 서비스단에 위임
+    //     List<CommentDto> commentDtos = commentService.apiNickNameComments(nickname);
+    //
+    //     // 보여줄 페이지를 설정
+    //     return ResponseEntity.status(HttpStatus.OK).body(commentDtos);
+    // }
+
+    // AOP 적용 후
     // 닉네임조회
     @GetMapping("/api/articles/comments")
     public ResponseEntity nicknameComments(@RequestParam String nickname, Model model) {
 
+        long start=System.currentTimeMillis();
+
         // 서비스단에 위임
         List<CommentDto> commentDtos = commentService.apiNickNameComments(nickname);
 
-        // 보여줄 페이지를 설정
+        long finish=System.currentTimeMillis();
+        long timeMs=finish-start;
+
+        log.info("API닉네임조회 시간: " + timeMs + "ms");
+        // 보여줄 페이지를 설정!
         return ResponseEntity.status(HttpStatus.OK).body(commentDtos);
     }
 }
