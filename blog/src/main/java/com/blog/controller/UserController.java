@@ -3,6 +3,7 @@ package com.blog.controller;
 import com.blog.dto.UserForm;
 import com.blog.model.User;
 import com.blog.repository.UserRepository;
+import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -62,6 +63,13 @@ public class UserController {
     @GetMapping("/user/loginForm")
     public String loginForm(){
         return "user/loginForm";
+    }
+
+    // logout
+    @GetMapping("/user/logout")
+    public String logOut(HttpSession session){
+        session.invalidate();
+        return "/user/loginForm";
     }
 
 }

@@ -1,13 +1,41 @@
 let index={
   init:function(){
-    let _this=this;
-   $('#btn-save').on('click',function(){
-       _this.save(); // 치환을 하는 이유는 그냥 this를 해버리면 일반 함수는 #btn-save를 가르키게 된다.
+//   let _this=this;
+//   $('#btn-save').on('click',function(){
+//       _this.save(); // 치환을 하는 이유는 그냥 this를 해버리면 일반 함수는 #btn-save를 가르키게 된다.
+//   });
+   $('#btn-save').on('click',()=>{ // this를 바인딩하기 위해서. 에로우함수의 this는 let index를 가르킴
+        this.save();
    });
-  // $('#btn-save').on('click',()=>{ // this를 바인딩하기 위해서. 에로우함수의 this는 let index를 가르킴
-  //  this.save();
-  // });
-  },
+
+   $('#btn-login').on('click',()=>{
+        this.login();
+   });
+ },
+ login:function(){
+      let data={
+           username:$("#username").val(),
+           password:$("#password").val()
+      }
+      $.ajax({
+           type:"POST",
+           url:'/api/user/login',
+           data:JSON.stringify(data), // http body 데이터
+           contentType:"application/json; charset=utf-8",
+           dataType:"json"
+      }).done(function(resp){
+           if(resp.data==1){
+              alert("로그인이 완료되었습니다.");
+           }else{
+             alert("사용자 정보가 없습니다.");
+           }
+           console.log(resp);
+           location.href="/";
+      }).fail(function(error){
+           alert(JSON.stringify(error));
+      });
+ },
+
  save:function(){
   // alert("user의 save함수 호출됨");
   let data={

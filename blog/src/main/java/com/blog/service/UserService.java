@@ -23,4 +23,12 @@ public class UserService {
         }
         return -1;
     }
+
+
+    @Transactional(readOnly = true)
+    public User 로그인(User user) {
+        User principal = userRepository.findByUsernameAndPassword(user.getUsername(),user.getPassword());
+
+        return principal;
+    }
 }
