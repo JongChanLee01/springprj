@@ -1,17 +1,40 @@
 let index={
   init:function(){
-//   let _this=this;
-//   $('#btn-save').on('click',function(){
-//       _this.save(); // 치환을 하는 이유는 그냥 this를 해버리면 일반 함수는 #btn-save를 가르키게 된다.
-//   });
-   $('#btn-save').on('click',()=>{ // this를 바인딩하기 위해서. 에로우함수의 this는 let index를 가르킴
-        this.save();
-   });
+    //   let _this=this;
+    //   $('#btn-save').on('click',function(){
+    //       _this.save(); // 치환을 하는 이유는 그냥 this를 해버리면 일반 함수는 #btn-save를 가르키게 된다.
+    //   });
+       $('#btn-save').on('click',()=>{ // this를 바인딩하기 위해서. 에로우함수의 this는 let index를 가르킴
+            this.save();
+       });
 
-   $('#btn-login').on('click',()=>{
-        this.login();
-   });
- },
+       $('#btn-login').on('click',()=>{
+            this.login();
+       });
+
+       // Remember Me
+       $('#memory').on('click', () => {
+          console.log($('#memory').prop("checked"))
+          if($('#memory').prop("checked")==true){
+            this.memory();
+          }else{
+            localStorage.clear();
+          }
+       });
+       // 페이지 로딩시 아이디 비번 자동입력
+       $('#username').val(localStorage.getItem("username"));
+       $('#password').val(localStorage.getItem("password"));
+  },
+  memory:function(){
+      var username= $('#username').val();
+      var password= $('#password').val();
+      localStorage.setItem('username',username);
+      localStorage.setItem('password',password);
+
+      $('#username').val(localStorage.getItem("username"));
+      $('#password').val(localStorage.getItem("password"));
+    },
+
  login:function(){
       let data={
            username:$("#username").val(),
@@ -28,6 +51,8 @@ let index={
               alert("로그인이 완료되었습니다.");
            }else{
              alert("사용자 정보가 없습니다.");
+             $("#username").focus();
+             return false; // 다음 단계로 진행 안함.
            }
            console.log(resp);
            location.href="/";
@@ -43,7 +68,7 @@ let index={
      password:$('#password').val(),
      email:$('#email').val()
   }
-    console.log(data);
+  console.log(data);
 
 // ajax 호출시 default가 비동기호출
 // ajax 통신을 이용해서 3개의 데이터를 json으로 변경하여 insert 요청

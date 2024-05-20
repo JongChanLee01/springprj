@@ -15,7 +15,7 @@ pageEncoding="UTF-8"%>
 
        <div class="form-group form-check">
            <label class="form-check-label">
-                 <input class="form-check-input" type="checkbox">Remember me
+                 <input class="form-check-input" id="memory" type="checkbox">Remember me
          </label>
        </div>
    </form>

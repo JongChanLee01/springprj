@@ -33,7 +33,9 @@ public class UserApiController {
         System.out.println(principal);
         if(principal !=null){
             session.setAttribute("principal",principal);
+            return new ResponseDto<Integer>(HttpStatus.OK.value(),1);
+        }else{
+            return new ResponseDto<Integer>(HttpStatus.NO_CONTENT.value(),0);
         }
-        return new ResponseDto<Integer>(HttpStatus.OK.value(),1);
     }
 }
