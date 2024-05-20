@@ -4,6 +4,11 @@ pageEncoding="UTF-8"%>
 
 <%@ include file="./layout/header.jsp" %>
 
+<style>
+.card-body img{ width:100px !important; height:100px;}
+.active{ background:red !important; color:white !important;}
+</style>
+
 <div class="container">
 <!--
     <div class="card m-1">
@@ -47,14 +52,14 @@ pageEncoding="UTF-8"%>
        <c:when test="${boards.first}">
          <li class="page-item disabled"><a class="page-link" href="?page=${boards.number-1}">Previous</a></li>
        </c:when>
-     <c:otherwise>
-        <li class="page-item"><a class="page-link" href="?page=${boards.number-1}">Previous</a></li>
-     </c:otherwise>
-   </c:choose>
+       <c:otherwise>
+          <li class="page-item"><a class="page-link" href="?page=${boards.number-1}#pagea">Previous</a></li>
+       </c:otherwise>
+      </c:choose>
 
   <c:forEach begin="0" end="${boards.totalPages  / 3 + 1}" step="1" varStatus="number">
     <li class="page-item">
-        <a class="page-link" href="?page=${number.index}">${number.index + 1}</a>
+        <a class="page-link a" href="?page=${number.index}#pagea" id="pagea">${number.index + 1}</a>
      </li>
  </c:forEach>
 
@@ -63,7 +68,7 @@ pageEncoding="UTF-8"%>
           <li class="page-item disabled"><a class="page-link" href="?page=${boards.number+1}">Next</a></li>
      </c:when>
      <c:otherwise>
-        <li class="page-item"><a class="page-link" href="?page=${boards.number+1}">Next</a></li>
+        <li class="page-item"><a class="page-link" href="?page=${boards.number+1}#pagea">Next</a></li>
      </c:otherwise>
      </c:choose>
    </ul>
@@ -71,3 +76,22 @@ pageEncoding="UTF-8"%>
 </div>
 
 <%@ include file="./layout/footer.jsp" %>
+
+<script>
+    var pageItem=document.querySelectorAll('.page-link.a');
+        const queryString = window.location.search;
+        const params = {};
+
+        queryString.substring(1).split('&').forEach(param => {
+           const [key, value] = param.split('=');
+          params[key] = value;
+      });
+
+      console.log(params); // { page : 0 }
+
+      if(params.page != undefined){
+        pageItem[params.page].classList.add("active");
+      }else{
+        pageItem[0].classList.add("active");
+      }
+</script>
