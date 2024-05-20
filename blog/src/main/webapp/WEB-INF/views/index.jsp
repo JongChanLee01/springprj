@@ -39,6 +39,7 @@ pageEncoding="UTF-8"%>
          <h4 class="card-title">${board.title}</h4>
          <p class="card-text">${board.content}</p>
          <a href="/board/${board.id}" class="btn btn-primary">상세보기</a>
+         <i>조회수 : ${board.count}</i> |
          <fmt:formatDate value="${board.createDate}" pattern="yyyy-MM-dd HH:mm:ss" var="formattedDate" />
          <i style="font-size: 14px"> 작성자 : ${board.user.username} | 작성일 : ${formattedDate}</i>
      </div>
@@ -57,9 +58,11 @@ pageEncoding="UTF-8"%>
        </c:otherwise>
       </c:choose>
 
-  <c:forEach begin="0" end="${boards.totalPages  / 3 + 1}" step="1" varStatus="number">
+<c:set var="page" value="${(boards.totalElements/3)}" />
+
+  <c:forEach begin="1" end="${page+((1-page%1))%1}" step="1" varStatus="number">
     <li class="page-item">
-        <a class="page-link a" href="?page=${number.index}#pagea" id="pagea">${number.index + 1}</a>
+        <a class="page-link a" href="?page=${number.index-1}#pageNext">${number.index}</a>
      </li>
  </c:forEach>
 
