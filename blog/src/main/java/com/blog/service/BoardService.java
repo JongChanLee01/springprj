@@ -45,4 +45,11 @@ public class BoardService {
         board.setCount(board.getCount()+1);
         return board;
     }
+
+    @Transactional
+    public void 글삭제하기(int id) {
+        System.out.println("글 삭제하기 : " + id);
+        boardRepository.deleteById(id);
+        // void형임 optional이 아니다.
+    }
 }

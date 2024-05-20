@@ -7,8 +7,33 @@ let index={
     $('#btn-write').on('click',()=>{ // this를 바인딩하기 위해서. 에로우함수의 this는 let index를 가르킴
          this.save();
     });
+
+    $('#btn-delete').on('click',()=>{
+       this.deleteById();
+    });
   },
 
+  // 삭제하기
+  deleteById:function(){
+      var id=$('#id').text();
+      var delOk=confirm("정말로 삭제하시겠습니까?");
+      $.ajax({
+        type:"DELETE",
+        url:'/api/board/'+id
+      }).done(function(resp){
+         if(delOk){
+            alert("삭제가 되었습니다.");
+            location.href="/";
+            return true;
+         }else{
+            return false;
+         }
+      }).fail(function(error){
+        alert(JSON.stringify(error));
+      });
+  },
+
+  // 글쓰기
   save:function(){
       let data={
          title:$('#title').val(),
