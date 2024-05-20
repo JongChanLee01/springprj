@@ -71,7 +71,7 @@ pageEncoding="UTF-8"%>
           <li class="page-item disabled"><a class="page-link" href="?page=${boards.number+1}">Next</a></li>
      </c:when>
      <c:otherwise>
-        <li class="page-item"><a class="page-link" href="?page=${boards.number+1}#pagea">Next</a></li>
+        <li class="page-item"><a class="page-link" href="?page=${boards.number+1}#pagea" id="pageNext">Next</a></li>
      </c:otherwise>
      </c:choose>
    </ul>
