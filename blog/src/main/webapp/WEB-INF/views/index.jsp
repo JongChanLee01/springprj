@@ -79,19 +79,19 @@ pageEncoding="UTF-8"%>
 
 <script>
     var pageItem=document.querySelectorAll('.page-link.a');
-        const queryString = window.location.search;
-        const params = {};
+    const queryString = window.location.search;
+    const params = {};
 
-        queryString.substring(1).split('&').forEach(param => {
-           const [key, value] = param.split('=');
-          params[key] = value;
-      });
+    queryString.substring(1).split('&').forEach(param => {
+      const [key, value] = param.split('=');
+      params[key] = value;
+    });
 
-      console.log(params); // { page : 0 }
+    console.log(params); // { page : 0 }
 
-      if(params.page != undefined){
-        pageItem[params.page].classList.add("active");
-      }else{
-        pageItem[0].classList.add("active");
-      }
+    if(params.page != undefined){
+      pageItem[params.page].classList.add("active");
+    }else{
+      pageItem[0].classList.add("active");
+    }
 </script>
