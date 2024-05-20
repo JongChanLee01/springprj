@@ -5,6 +5,8 @@ import com.blog.model.User;
 import com.blog.repository.BoardRepository;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,7 +30,19 @@ public class BoardService {
         boardRepository.save(board);
     }
 
-    public List<Board> 글목록(){
-        return boardRepository.findAll();
+    // public List<Board> 글목록(){
+    //     return boardRepository.findAll();
+    // }
+
+    public Page<Board> 글목록(Pageable pageable){
+        return boardRepository.findAll(pageable);
+    }
+
+    public Board 글상세보기(int id) {
+        Board board = boardRepository.findById(id).orElseThrow(()->{
+            return new IllegalArgumentException("글 상세보기 실패: 아이디를 찾을 수 없습니다.");
+        });
+        board.setCount(board.getCount()+1);
+        return board;
     }
 }

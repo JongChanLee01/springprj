@@ -25,6 +25,7 @@ public class Board {
     private String title;
 
     @Lob // 대용량 데이터
+    @Column(columnDefinition = "longblob")
     private String content; // 섬머노트 라이브러리 <html>태그
 
     @ColumnDefault("0")
