@@ -21,8 +21,14 @@ public class BoardApiController {
 
     @PostMapping("/api/board")
     public ResponseDto<Integer> save(@RequestBody Board board){
-        boardService.글쓰기(board);
-        return new ResponseDto<Integer>(HttpStatus.OK.value(),1);
+        // boardService.글쓰기(board);
+        // return new ResponseDto<Integer>(HttpStatus.OK.value(),1);
+        Boolean isSession= boardService.글쓰기(board);
+        if(isSession==true){
+            return new ResponseDto<Integer>(HttpStatus.OK.value(),1);
+        }else{
+            return new ResponseDto<Integer>(HttpStatus.OK.value(),0);
+        }
     }
 
     @DeleteMapping("/api/board/{id}")

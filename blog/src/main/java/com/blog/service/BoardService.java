@@ -25,15 +25,31 @@ public class BoardService {
     @Autowired
     private HttpSession session;
 
+    // @Transactional
+    // public void 글쓰기(Board board){ // title, content
+    //     User user= (User) session.getAttribute("principal");
+    //
+    //     board.setCount(0); // 조회수 0
+    //     board.setUser(user);
+    //
+    //     boardRepository.save(board);
+    // }
+
+    // 글쓰기 세션 처리
     @Transactional
-    public void 글쓰기(Board board){ // title, content
-        User user= (User) session.getAttribute("principal");
-
-        board.setCount(0); // 조회수 0
-        board.setUser(user);
-
-        boardRepository.save(board);
+    public Boolean 글쓰기(Board board){ // title, content
+        // log.info("session 1: " + session.getAttribute("principal"));
+        if(session.getAttribute("principal") != null){
+            User user= (User) session.getAttribute("principal");
+            board.setCount(0);
+            board.setUser(user);
+            boardRepository.save(board);
+            return true;
+        }else{
+            return false;
+        }
     }
+
 
     // public List<Board> 글목록(){
     //     return boardRepository.findAll();

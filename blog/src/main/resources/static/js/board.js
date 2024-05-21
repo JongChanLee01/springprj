@@ -121,9 +121,13 @@ let index={
        // => javascript 오브젝트로 변경한다.
        // 기본값은 json 으로 던져준다. text -> string
    }).done(function(resp){
-       alert("글쓰기가 완료되었습니다.");
-       console.log(resp);
-       location.href="/";
+       if(resp.data==1){
+          alert("글쓰기가 완료되었습니다.");
+          location.href="/";
+       }else{
+          alert("세션이 만료되었습니다.");
+          location.href="/user/loginForm";
+       }
    }).fail(function(error){
        alert(JSON.stringify(error));
    });
