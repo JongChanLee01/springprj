@@ -56,6 +56,19 @@ public class UserApiController {
     @PutMapping("/user")
     public ResponseDto<Integer> update(@RequestBody User user){
         userService.회원수정(user);
+        // 여기서는 트랜잭션이 종료되기 때문에 DB에 값은 변경이 돼있다.
+        // 하지만 세션값은 변경되지 않은 상태이기 때문에 우리가 직접 세션값을 변경해준다.
+
         return new ResponseDto<Integer>(HttpStatus.OK.value(), 1);
+    }
+
+    @DeleteMapping("/user/delete/{id}")
+    public ResponseDto<Integer> delete(@PathVariable Integer id, @RequestBody User user){
+        int result= userService.회원탈퇴(id, user);
+        if(result==1){
+            return new ResponseDto<Integer>(HttpStatus.OK.value(), 1);
+        }else{
+            return new ResponseDto<Integer>(HttpStatus.NO_CONTENT.value(), -1);
+        }
     }
 }

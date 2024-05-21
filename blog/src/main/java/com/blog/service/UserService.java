@@ -2,6 +2,7 @@ package com.blog.service;
 
 import com.blog.model.User;
 import com.blog.repository.UserRepository;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,6 +39,8 @@ public class UserService {
         else return 0;
     }
 
+    @Autowired
+    HttpSession session;
     @Transactional
     public void 회원수정(User user) {
         // 수정시에는 영속성 컨텍스트 User오브젝트를 영속화시키고, 영속화된 User오브젝트를 수정한다.
@@ -48,5 +51,20 @@ public class UserService {
         persistance.setEmail(user.getEmail());
         // 회원수정 함수 종료시=서비스 종료=트랙잭션종료=commit이 자동으로 된다.
         // 영속화된 persistance객체의 변화가 감지되면 더티체킹이 되어 자동으로 update문을 날려준다.
+
+        session.setAttribute("principal",persistance);
+    }
+
+    @Transactional
+    public int 회원탈퇴(Integer id, User user) {
+        User user2=userRepository.findById(id).orElse(null);
+        if(user2 != null) {
+            User user3 = userRepository.findByUsernameAndPassword(user.getUsername(), user.getPassword());
+            if(user3 != null){
+                userRepository.delete(user3);
+                return 1;
+            }
+        }
+        return -1;
     }
 }

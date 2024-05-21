@@ -3,6 +3,7 @@ package com.blog.controller;
 import com.blog.dto.UserForm;
 import com.blog.model.User;
 import com.blog.repository.UserRepository;
+import com.blog.service.UserService;
 import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,22 +20,20 @@ import java.util.List;
 @Controller
 @Slf4j
 public class UserController {
-    @PostMapping("/home5")
-    public String home5(String username, String email){
-        return "home";
-    }
 
-    // @GetMapping("/home2")
-    // public String home2(@RequestBody User user){
-    // return "users/join";
-    // }
+    @Autowired // 의존성 주입(DI)
+    private UserRepository userRepository;
+
+    @Autowired
+    UserService userService;
+
+    @Autowired
+    HttpSession session;
+
     @GetMapping("/home")
     public String home(){
         return "users/join";
     }
-
-    @Autowired // 의존성 주입(DI)
-    private UserRepository userRepository;
 
     @PostMapping("/home/join")
     // public String join(UserForm form){
@@ -65,15 +64,31 @@ public class UserController {
         return "user/loginForm";
     }
 
-    // logout
+    // 로그아웃
     @GetMapping("/user/logout")
     public String logOut(HttpSession session){
         session.invalidate();
         return "/user/loginForm";
     }
 
+
+    // 회원 정보 수정
+    // @GetMapping("/user/updateForm")
+    // public String updateForm(){
+    //     return "user/updateForm";
+    // }
+
     @GetMapping("/user/updateForm")
-    public String updateForm(){
-        return "user/updateForm";
+    public String updateForm(Model model){
+        model.addAttribute("principal",session.getAttribute("principal"));
+        return "/user/updateForm";
+    }
+
+
+    // 회원탈퇴
+    @GetMapping("/user/deleteForm")
+    public String deleteForm(Model model){
+        model.addAttribute("principal",session.getAttribute("principal"));
+        return "/user/deleteForm";
     }
 }

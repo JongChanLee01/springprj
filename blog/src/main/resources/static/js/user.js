@@ -21,6 +21,14 @@ let index={
             this.update();
        });
 
+       $('#btn-delete').on('click',()=>{
+            var del=confirm("정말로 탈퇴하시겠습니까?");
+            if(del){
+                this.delete();
+            }else{
+                return false;
+            }
+       });
 
        // Remember Me
        $('#memory').on('click', () => {
@@ -114,6 +122,35 @@ let index={
    });
  },
 
+ // 회원탈퇴
+ delete:function(){
+ var id=$('#id').val();
+ let data={
+     username:$("#username").val(),
+     password:$("#password").val()
+ }
+
+ $.ajax({
+ type:"DELETE",
+ url:'/user/delete/'+id,
+         data:JSON.stringify(data),
+         contentType:"application/json; charset=utf-8",
+         dataType:"json"
+     }).done(function(resp){
+       console.log(resp);
+       if(resp.data==1){
+          alert("회원탈퇴가 완료되었습니다.");
+          console.log(resp);
+          location.href="/user/logout";
+       }else{
+          alert("비밀번호가 잘못되었습니다.");
+          return false;
+       }
+   }).fail(function(error){
+    alert(JSON.stringify(error));
+   });
+ },
+
  save:function(){
   // alert("user의 save함수 호출됨");
   let data={
@@ -142,7 +179,7 @@ let index={
           location.href="/";
       }else{
            alert("아이디가 중복되었습니다.");
-           return ;
+           return false;
       }
    }).fail(function(error){
       alert(JSON.stringify(error));

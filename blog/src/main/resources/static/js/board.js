@@ -9,7 +9,12 @@ let index={
     });
 
     $('#btn-delete').on('click',()=>{
-       this.deleteById();
+        var delOk=confirm("정말로 삭제하시겠습니까?");
+        if(delOk){
+            this.deleteById();
+        }else{
+            return false;
+        }
     });
 
     $('#btn-update').on('click',()=>{
@@ -42,18 +47,13 @@ let index={
   // 삭제하기
   deleteById:function(){
       var id=$('#id').text();
-      var delOk=confirm("정말로 삭제하시겠습니까?");
+
       $.ajax({
         type:"DELETE",
         url:'/api/board/'+id
       }).done(function(resp){
-         if(delOk){
-            alert("삭제가 되었습니다.");
-            location.href="/";
-            return true;
-         }else{
-            return false;
-         }
+        alert("삭제가 되었습니다.");
+        location.href="/";
       }).fail(function(error){
         alert(JSON.stringify(error));
       });
