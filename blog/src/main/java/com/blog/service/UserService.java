@@ -31,4 +31,10 @@ public class UserService {
 
         return principal;
     }
+
+    public int 중복확인(String username) {
+        User user=userRepository.findByUsername(username);
+        if(user==null) return 1;
+        else return 0;
+    }
 }

@@ -7,6 +7,7 @@ pageEncoding="UTF-8"%>
          <div class="form-group">
             <label for="username">유저네임</label>
           <input type="text" id="username" class="form-control">
+          <button id="btn-check" class="btn btn-success">아이디중복검사</button>
        </div>
        <div class="form-group">
           <label for="password">패스워드</label>
