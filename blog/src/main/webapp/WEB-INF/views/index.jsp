@@ -36,7 +36,10 @@ pageEncoding="UTF-8"%>
 <c:forEach var="board" items="${boards.content}">
   <div class="card m-2">
      <div class="card-body">
-         <h4 class="card-title">${board.title}</h4>
+         <h4 class="card-title">
+            ${board.title}
+            <span style="font-size:14px; font-weight:normal">[ 댓글 개수 : <c:out value="${fn:length(board.replies)}" />개 ]</span>
+         </h4>
          <p class="card-text">${board.content}</p>
          <a href="/board/${board.id}" class="btn btn-primary">상세보기</a>
          <i>조회수 : ${board.count}</i> |
