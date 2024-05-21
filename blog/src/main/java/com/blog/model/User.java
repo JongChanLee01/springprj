@@ -1,14 +1,13 @@
 package com.blog.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 // ORM -> Java Object를 테이블로 맵핑
 @Entity  // User 클래스가 MySQL에 테이블이 생성
@@ -39,4 +38,10 @@ public class User {
 
     @CreationTimestamp  // 시간이 자동 입력
     private Timestamp createDate;
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    @JsonIgnoreProperties({"user"})
+    @ToString.Exclude
+    @OrderBy("id desc")
+    private List<Board> board;
 }

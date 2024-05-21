@@ -1,8 +1,10 @@
 package com.blog.service;
 
 import com.blog.model.Board;
+import com.blog.model.Reply;
 import com.blog.model.User;
 import com.blog.repository.BoardRepository;
+import com.blog.repository.ReplyRepository;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -16,6 +18,9 @@ import java.util.List;
 public class BoardService {
     @Autowired
     private BoardRepository boardRepository;
+
+    @Autowired
+    ReplyRepository replyRepository;
 
     @Autowired
     private HttpSession session;
@@ -71,5 +76,20 @@ public class BoardService {
         // boardRepository.save(board);
         // 해당함수 종료시 (서비스가 종료될때) 트랜잭션이 종료된다. 이때 더티체킹-자동업데이트가된다.
         // db flush된다. 즉 commit이 된다.
+    }
+
+    public void 댓글쓰기(User user, int boardId, Reply requestReply) {
+        Board board = boardRepository.findById(boardId).orElseThrow(()->{
+            return new IllegalArgumentException("댓글쓰기 실패: 게시글 아이디를 찾을 수 없습니다.");
+        }); // 영속화 완료
+
+        requestReply.setUser(user);
+        requestReply.setBoard(board);
+
+        replyRepository.save(requestReply);
+    }
+
+    public void 댓글삭제(int replyId) {
+        replyRepository.deleteById(replyId);
     }
 }

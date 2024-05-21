@@ -18,8 +18,49 @@ let index={
     });
 
     $('#btn-update').on('click',()=>{
-           this.update();
-      });
+         this.update();
+    });
+    $('#btn-reply-save').on('click',()=>{
+         this.replySave();
+    });
+  },
+
+  replySave:function(){
+      let data={
+        boardId:$("#boardId").val(),
+        content:$("#reply-content").val(),
+      }
+     console.log(data);
+
+     $.ajax({
+        type:"POST",
+        url:`/api/board/${data.boardId}/reply`,
+        data:JSON.stringify(data),
+        contentType:"application/json; charset=utf-8",
+        dataType:"json"
+     }).done(function(resp){
+        console.log(resp)
+        alert("댓글이 등록되었습니다.");
+        location.href=`/board/${data.boardId}`;
+     }).fail(function(error){
+        console.log(error);
+        alert(JSON.stringify(error));
+     });
+  },
+
+  // data가 필요없기때문에 contentType도 삭제한다.
+  // 삭제성공하면 해당게시글로 돌아온다.
+  replyDelete : function(boardId, replyId){
+    $.ajax({
+      type: "DELETE",
+      url: `/api/board/${boardId}/reply/${replyId}`,
+      dataType: "json"
+     }).done(function(resp){
+    alert("댓글삭제 성공");
+    location.href = `/board/${boardId}`;
+   }).fail(function(error){
+    alert(JSON.stringify(error));
+   });
   },
 
   // 수정하기

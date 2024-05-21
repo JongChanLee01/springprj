@@ -1,6 +1,9 @@
 package com.blog.service;
 
+import com.blog.model.Board;
+import com.blog.model.Reply;
 import com.blog.model.User;
+import com.blog.repository.BoardRepository;
 import com.blog.repository.UserRepository;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +15,10 @@ public class UserService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private BoardRepository boardRepository;
+
 
     @Transactional
     public int 회원가입(User user){
@@ -61,10 +68,12 @@ public class UserService {
         if(user2 != null) {
             User user3 = userRepository.findByUsernameAndPassword(user.getUsername(), user.getPassword());
             if(user3 != null){
+                boardRepository.deleteByUserId(user3.getId());
                 userRepository.delete(user3);
                 return 1;
             }
         }
         return -1;
     }
+
 }
