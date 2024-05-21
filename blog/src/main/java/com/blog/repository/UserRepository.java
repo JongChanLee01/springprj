@@ -12,12 +12,18 @@ import org.springframework.stereotype.Repository;
 public interface UserRepository extends JpaRepository<User, Integer> {
     // 기본적인 CRUD 만 가능하다.
     // JPA Naming 쿼리
-    // SELECT * FROM user WHERE username=? AND password=? ;
+    // SELECT * FROM user WHERE username=?1 AND password=?2 ;
 
     User findByUsernameAndPassword(@Param("username") String username, @Param("password") String password);
 
-    @Query(value="SELECT * FROM user WHERE username=?1",nativeQuery=true)
-    User findByUsername(@Param("username") String username);
+
+    // mybatis -> #{username}
+    // jpa -> ?1, ?2
+    // ?1 은 파라미터에 따라서 값이 늘어남 위에 주석처럼.
+    // username=?1"은 @Param("username")를 받아와서 처리
+    // @Query(value="SELECT * FROM user WHERE username=?1",nativeQuery=true)
+    // User findByUsername(@Param("username") String username);
+    User findByUsername(String username);
 
     //@Query(value="SELECT * FROM user WHERE username=?1 AND password=?2",nativeQuery=true)
     // User login(String username, String password);

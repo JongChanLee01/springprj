@@ -50,4 +50,12 @@ public class UserApiController {
             return ResponseEntity.status(HttpStatus.OK).body("NO");
         }
     }
+
+    // key=value, x-www-form-urlencode의 형태로 데이터를 받고 싶으면 @RequestBody를 생략한다.
+    // JSON형태로 받고 싶으면 @RequestBody를 붙인다.
+    @PutMapping("/user")
+    public ResponseDto<Integer> update(@RequestBody User user){
+        userService.회원수정(user);
+        return new ResponseDto<Integer>(HttpStatus.OK.value(), 1);
+    }
 }

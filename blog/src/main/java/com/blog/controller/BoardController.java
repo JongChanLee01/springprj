@@ -33,6 +33,7 @@ public class BoardController {
     //     return "index"; // index.jsp 파일 이름 (확장자 제외)
     // }
     @GetMapping({"","/"})
+    // 페이지당 글목록 개수는 size=3 3개씩 보이게함
     public String index(Model model, @PageableDefault(size=3,sort="id",direction = Sort.Direction.DESC) Pageable pageable) {
         // /WEB/views/index.jsp
         Page<Board> boards= boardService.글목록(pageable);
