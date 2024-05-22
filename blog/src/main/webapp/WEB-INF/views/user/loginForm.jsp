@@ -3,7 +3,8 @@ pageEncoding="UTF-8"%>
 
 <%@ include file="../layout/header.jsp" %>
 <div class="container">
-     <form>
+     <!-- <form> -->
+     <form action="#" method="post">
          <div class="form-group">
              <label for="username">Username</label>
               <input type="text" class="form-control" id="username">
@@ -15,7 +16,8 @@ pageEncoding="UTF-8"%>
 
        <div class="form-group form-check">
            <label class="form-check-label">
-                 <input class="form-check-input" id="memory" type="checkbox">Remember me
+                 <!-- <input class="form-check-input" id="memory" type="checkbox">Remember me -->
+                 <input name="remember" class="form-check-input" id="memory" type="checkbox">Remember me
          </label>
        </div>
    </form>

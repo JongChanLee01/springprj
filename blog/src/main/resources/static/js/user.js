@@ -166,7 +166,8 @@ let index={
 
  $.ajax({
      type:"POST",
-     url:'/api/user',
+//     url:'/api/user',
+     url:'/auth/joinProc',
      data:JSON.stringify(data), // http body 데이터
      contentType:"application/json; charset=utf-8", // body데이터가 어떤 타입인지(MIME)
      dataType:"json" // 요청을 서버로 해서 응답이 왔을때 기본적으로 모든것이 문자열(모양은 json)

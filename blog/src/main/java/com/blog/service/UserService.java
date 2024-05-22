@@ -2,15 +2,20 @@ package com.blog.service;
 
 import com.blog.model.Board;
 import com.blog.model.Reply;
+import com.blog.model.RoleType;
 import com.blog.model.User;
 import com.blog.repository.BoardRepository;
 import com.blog.repository.UserRepository;
 import jakarta.servlet.http.HttpSession;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
+// @RequiredArgsConstructor
 public class UserService {
 
     @Autowired
@@ -20,14 +25,41 @@ public class UserService {
     private BoardRepository boardRepository;
 
 
+    // @Transactional
+    // public int 회원가입(User user){
+    //     try {
+    //         userRepository.save(user);
+    //         return 1;
+    //     }catch (Exception e){
+    //         e.printStackTrace();
+    //         System.out.println("UserService: 회원가입(): " + e.getMessage());
+    //     }
+    //     return -1;
+    // }
+
+    @Autowired
+    private PasswordEncoder encoder;
+
+    // private final PasswordEncoder encoder;
+
+    // public UserService(PasswordEncoder encoder) {
+    //     this.encoder = encoder;
+    // }
+
+
     @Transactional
-    public int 회원가입(User user){
+    public int 회원가입(User user) {
         try {
+            String rawPassword = user.getPassword();
+            String encPassword = encoder.encode(rawPassword); // 해쉬
+
+            user.setPassword(encPassword);
+            user.setRole(RoleType.USER);
             userRepository.save(user);
+
             return 1;
         }catch (Exception e){
             e.printStackTrace();
-            System.out.println("UserService: 회원가입(): " + e.getMessage());
         }
         return -1;
     }

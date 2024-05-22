@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.DynamicInsert;
 
 import java.sql.Timestamp;
 import java.util.List;
@@ -15,7 +16,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder  // 빌더 패턴
-//@DynamicInsert  insert시 null 인 필드를 제외
+@DynamicInsert // insert시 null 인 필드를 제외
 public class User {
     @Id  // primary key
     @GeneratedValue(strategy= GenerationType.IDENTITY) // 프로젝트에서 연결된

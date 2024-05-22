@@ -16,13 +16,20 @@ public class UserApiController {
     @Autowired
     private UserService userService;
 
-    @PostMapping("api/user")
+    // @PostMapping("api/user")
+    // public ResponseDto<Integer> save(@RequestBody User user){
+    //     user.setRole(RoleType.ADMIN);
+    //     int result = userService.회원가입(user);
+    //
+    //     return new ResponseDto<Integer>(200,result);
+    // }
+    @PostMapping("auth/joinProc")
     public ResponseDto<Integer> save(@RequestBody User user){
+
         user.setRole(RoleType.ADMIN);
-        int result = userService.회원가입(user);
+        int result= userService.회원가입(user);
 
         return new ResponseDto<Integer>(200,result);
-
     }
 
     @PostMapping("api/user/login")
