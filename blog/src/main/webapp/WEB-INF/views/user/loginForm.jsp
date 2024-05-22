@@ -4,15 +4,16 @@ pageEncoding="UTF-8"%>
 <%@ include file="../layout/header.jsp" %>
 <div class="container">
      <!-- <form> -->
-     <form action="#" method="post">
+     <!-- <form action="#" method="post"> -->
+     <form action="/auth/loginProc" method="post">
          <div class="form-group">
              <label for="username">Username</label>
-              <input type="text" class="form-control" id="username">
-          </div>
+             <input type="text" class="form-control" id="username" name="username">
+         </div>
          <div class="form-group">
-           <label for="password">Password</label>
-            <input type="password" id="password" class="form-control">
-       </div>
+            <label for="password">Password</label>
+            <input type="password" id="password" class="form-control" name="password">
+         </div>
 
        <div class="form-group form-check">
            <label class="form-check-label">
@@ -20,8 +21,9 @@ pageEncoding="UTF-8"%>
                  <input name="remember" class="form-check-input" id="memory" type="checkbox">Remember me
          </label>
        </div>
+       <button id="btn-login" class="btn btn-primary">로그인</button>
    </form>
-  <button id="btn-login" class="btn btn-primary">로그인</button>
+  <!-- <button id="btn-login" class="btn btn-primary">로그인</button> -->
 </div>
 <script src="/js/user.js"></script>
 <%@ include file="../layout/footer.jsp" %>

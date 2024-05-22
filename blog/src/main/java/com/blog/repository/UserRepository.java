@@ -6,6 +6,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 // JSP에서는 DAO에 해당한다.
 // 자동으로 bean으로 등록이 된다.
 @Repository // 생략가능
@@ -23,7 +25,10 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     // username=?1"은 @Param("username")를 받아와서 처리
     // @Query(value="SELECT * FROM user WHERE username=?1",nativeQuery=true)
     // User findByUsername(@Param("username") String username);
-    User findByUsername(String username);
+    // User findByUsername(String username);
+
+    @Query(value="SELECT * FROM user WHERE username=?1",nativeQuery=true)
+    Optional<User> findByUsername(@Param("username") String username);
 
     //@Query(value="SELECT * FROM user WHERE username=?1 AND password=?2",nativeQuery=true)
     // User login(String username, String password);

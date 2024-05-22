@@ -24,11 +24,15 @@ public class SecurityConfig {
                         .csrf((csrf) -> csrf.disable())
                         .formLogin((formLogin) -> formLogin
                         .loginPage("/auth/loginForm")
-                        .defaultSuccessUrl("/")
+                        .loginProcessingUrl("/auth/loginProc")
+                        .defaultSuccessUrl("/",true)
+                        .usernameParameter("username")
+                        .passwordParameter("password")
                         .permitAll())
         ;
         return http.build();
     }
+    // 스프링 시큐리티가 해당주소로 요청오는 로그인을 가로채서 대신 로그인 해 준다.
 
     @Bean
     public PasswordEncoder passwordEncoder() {

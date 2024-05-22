@@ -14,6 +14,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Service
 // @RequiredArgsConstructor
 public class UserService {
@@ -73,7 +75,8 @@ public class UserService {
     }
 
     public int 중복확인(String username) {
-        User user=userRepository.findByUsername(username);
+        // User user=userRepository.findByUsername(username);
+        Optional<User> user=userRepository.findByUsername(username);
         if(user==null) return 1;
         else return 0;
     }
