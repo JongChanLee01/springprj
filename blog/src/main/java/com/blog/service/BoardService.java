@@ -108,4 +108,12 @@ public class BoardService {
     public void 댓글삭제(int replyId) {
         replyRepository.deleteById(replyId);
     }
+
+    @Transactional
+    public void 댓글수정(int replyId, Reply reply) {
+        Reply reply1=replyRepository.findById(replyId).orElse(null);
+        reply1.setContent(reply.getContent());
+        // dirty checking 
+        // replyRepository.save(reply1); 은 Transactional을 사용하여 자동으로 저장됨
+    }
 }

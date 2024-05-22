@@ -59,4 +59,11 @@ public class BoardApiController {
         boardService.댓글삭제(replyId);
         return new ResponseDto<Integer>(HttpStatus.OK.value(), 1);
     }
+
+    // 댓글 수정
+    @PutMapping("/api/board/{boardId}/reply/{replyId}")
+    public ResponseDto<Integer> replyUpdate(@PathVariable int replyId, @RequestBody Reply reply){
+        boardService.댓글수정(replyId, reply);
+        return new ResponseDto<Integer>(HttpStatus.OK.value(),1);
+    }
 }

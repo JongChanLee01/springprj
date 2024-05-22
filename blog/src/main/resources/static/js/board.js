@@ -25,6 +25,7 @@ let index={
     });
   },
 
+  // 댓글 작성
   replySave:function(){
       let data={
         boardId:$("#boardId").val(),
@@ -61,6 +62,27 @@ let index={
    }).fail(function(error){
     alert(JSON.stringify(error));
    });
+  },
+
+  // 댓글 수정
+  replyUpdate : function(boardId, replyId){
+  let data={
+      content:$("#reply-content").val(),
+  }
+
+  console.log(boardId,replyId,data)
+  $.ajax({
+      type: "PUT",
+      url: `/api/board/${boardId}/reply/${replyId}`,
+      data:JSON.stringify(data),
+      contentType:"application/json; charset=utf-8",
+      dataType:"json"
+  }).done(function(resp){
+      alert("댓글수정 성공");
+      location.href = `/board/${boardId}`;
+  }).fail(function(error){
+      alert(JSON.stringify(error));
+  });
   },
 
   // 수정하기
