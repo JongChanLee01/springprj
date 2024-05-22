@@ -54,18 +54,31 @@ public class UserController {
         return "users/ushow";
     }
 
-    @GetMapping("/user/joinForm")
+    // @GetMapping("/user/joinForm")
+    // public String joinForm(){
+    //     return "user/joinForm";
+    // }
+    @GetMapping("/joinForm")
     public String joinForm(){
         return "user/joinForm";
     }
 
-    @GetMapping("/user/loginForm")
+    // @GetMapping("/user/loginForm")
+    // public String loginForm(){
+    //     return "user/loginForm";
+    // }
+    @GetMapping("/loginForm")
     public String loginForm(){
         return "user/loginForm";
     }
 
     // 로그아웃
-    @GetMapping("/user/logout")
+    // @GetMapping("/user/logout")
+    // public String logOut(HttpSession session){
+    //     session.invalidate();
+    //     return "/user/loginForm";
+    // }
+    @GetMapping("/logout")
     public String logOut(HttpSession session){
         session.invalidate();
         return "/user/loginForm";

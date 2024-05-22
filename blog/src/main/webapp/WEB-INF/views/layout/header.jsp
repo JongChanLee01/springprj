@@ -32,15 +32,20 @@ pageEncoding="UTF-8"%>
        <c:choose>
          <c:when test="${empty sessionScope.principal}">
             <ul class="navbar-nav">
-                <li class="nav-item"> <a class="nav-link" href="/user/loginForm">로그인</a> </li>
+               <!--
+               <li class="nav-item"> <a class="nav-link" href="/user/loginForm">로그인</a> </li>
                <li class="nav-item"> <a class="nav-link" href="/user/joinForm">회원가입</a> </li>
+               -->
+               <li class="nav-item"> <a class="nav-link" href="/loginForm">로그인</a> </li>
+               <li class="nav-item"> <a class="nav-link" href="/joinForm">회원가입</a> </li>
           </ul>
        </c:when>
      <c:otherwise>
         <ul class="navbar-nav">
              <li class="nav-item"> <a class="nav-link" href="/board/writeForm">글쓰기</a> </li>
              <li class="nav-item"> <a class="nav-link" href="/user/updateForm">회원정보</a> </li>
-             <li class="nav-item"> <a class="nav-link" href="/user/logout">로그아웃</a> </li>
+             <!-- <li class="nav-item"> <a class="nav-link" href="/user/logout">로그아웃</a> </li> -->
+             <li class="nav-item"> <a class="nav-link" href="/logout">로그아웃</a> </li>
              <!--
              <li class="nav-item">
                  <a class="nav-link" href="/user/delete/${principal.id}">회원탈퇴</a>
