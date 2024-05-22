@@ -2,12 +2,14 @@ package com.blog.config;
 
 import com.blog.model.User;
 import com.blog.repository.UserRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service  // Bean 등록
 public class PrincipalDetailService implements UserDetailsService {
 
@@ -20,6 +22,7 @@ public class PrincipalDetailService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User principal=userRepository.findByUsername(username).orElse(null);
+        log.info("principal:" + principal);
 
         return new PrincipalDetail(principal);
         // 시큐리티의 세션에 유저 정보가 저장이 된다.

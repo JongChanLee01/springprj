@@ -8,9 +8,9 @@ let index={
             this.save();
        });
 
-       $('#btn-login').on('click',()=>{
-            this.login();
-       });
+//       $('#btn-login').on('click',()=>{
+//            this.login();
+//       });
 
        $('#btn-check').on('click',()=>{
             event.preventDefault();
