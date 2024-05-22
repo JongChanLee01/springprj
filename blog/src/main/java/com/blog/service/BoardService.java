@@ -1,10 +1,12 @@
 package com.blog.service;
 
+import com.blog.dto.ReplySaveRequestDto;
 import com.blog.model.Board;
 import com.blog.model.Reply;
 import com.blog.model.User;
 import com.blog.repository.BoardRepository;
 import com.blog.repository.ReplyRepository;
+import com.blog.repository.UserRepository;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -94,15 +96,45 @@ public class BoardService {
         // db flush된다. 즉 commit이 된다.
     }
 
-    public void 댓글쓰기(User user, int boardId, Reply requestReply) {
-        Board board = boardRepository.findById(boardId).orElseThrow(()->{
-            return new IllegalArgumentException("댓글쓰기 실패: 게시글 아이디를 찾을 수 없습니다.");
-        }); // 영속화 완료
+    // 댓글 쓰기
+    // public void 댓글쓰기(User user, int boardId, Reply requestReply) {
+    //     Board board = boardRepository.findById(boardId).orElseThrow(()->{
+    //         return new IllegalArgumentException("댓글쓰기 실패: 게시글 아이디를 찾을 수 없습니다.");
+    //     }); // 영속화 완료
+    //
+    //     requestReply.setUser(user);
+    //     requestReply.setBoard(board);
+    //
+    //     replyRepository.save(requestReply);
+    // }
 
-        requestReply.setUser(user);
-        requestReply.setBoard(board);
+    // DTO로 댓글 쓰기
+    @Autowired
+    UserRepository userRepository;
+    
+    @Transactional
+    public void 댓글쓰기(ReplySaveRequestDto replySaveRequestDto) {
+        Board board=boardRepository.findById(replySaveRequestDto.getBoardId()).orElseThrow(()->{
+            return new IllegalArgumentException("댓글쓰기 실패: 게시글아이디를 찾을 수 없습니다.");
+        });
+        // User user=userRepository.findById(replySaveRequestDto.getUserId()).orElseThrow(()->{
+        //     return new IllegalArgumentException("댓글쓰기 실패: 유저아이디 찾을 수 없습니다.");
+        // });
 
-        replyRepository.save(requestReply);
+        User user = (User) session.getAttribute("principal");
+
+        //dto -> entity로 변환하기
+
+        // 방법1 -reply에 update메소드 추가하기
+        Reply reply= new Reply();
+        reply.update(user,board, replySaveRequestDto.getContent());
+
+        // 방법2-builder() 패턴사용하기
+        // Reply reply= Reply.builder().user(user).board(board)
+        //         .content(replySaveRequestDto.getContent()).id(1).build();
+
+        // reply.update에서 업데이트로 해서 save를 따로 해주어야함
+        replyRepository.save(reply);
     }
 
     public void 댓글삭제(int replyId) {

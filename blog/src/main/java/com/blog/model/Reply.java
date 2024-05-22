@@ -35,4 +35,10 @@ public class Reply {
     @CreationTimestamp
     private Timestamp createDate;
 
+    // DTO에서 넘어온 데이터를 엔티티(Model)에 수정
+    public void update(User user, Board board, String content){
+        setUser(user);
+        setBoard(board);
+        setContent(content);
+    }
 }

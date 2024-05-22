@@ -1,5 +1,6 @@
 package com.blog.api;
 
+import com.blog.dto.ReplySaveRequestDto;
 import com.blog.dto.ResponseDto;
 import com.blog.model.Board;
 import com.blog.model.Reply;
@@ -44,12 +45,21 @@ public class BoardApiController {
     }
 
 
-    // 댓글올리기
-    @PostMapping("/api/board/{boardId}/reply")
-    public ResponseDto<Integer> replySave(@PathVariable int boardId, @RequestBody Reply reply){
-        User user= (User) session.getAttribute("principal");
+    // 댓글 쓰기
+    // @PostMapping("/api/board/{boardId}/reply")
+    // public ResponseDto<Integer> replySave(@PathVariable int boardId, @RequestBody Reply reply){
+    //     User user= (User) session.getAttribute("principal");
+    //
+    //     boardService.댓글쓰기(user, boardId, reply);
+    //     return new ResponseDto<Integer>(HttpStatus.OK.value(),1);
+    // }
 
-        boardService.댓글쓰기(user, boardId, reply);
+    // DTO로 댓글쓰기
+    // 원래는 데이터를 받을 때 컨트롤러에서 dto를 만드는것이 좋다.
+    // dto를 사용하지 않는 이유는 규모가 작기 때문이다.
+    @PostMapping("/api/board/{boardId}/reply")
+    public ResponseDto<Integer> replySave(@RequestBody ReplySaveRequestDto replySaveRequestDto){
+        boardService.댓글쓰기(replySaveRequestDto);
         return new ResponseDto<Integer>(HttpStatus.OK.value(),1);
     }
 
