@@ -11,6 +11,11 @@ import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,7 +27,7 @@ public class BoardService {
     private BoardRepository boardRepository;
 
     @Autowired
-    ReplyRepository replyRepository;
+    private ReplyRepository replyRepository;
 
     @Autowired
     private HttpSession session;
@@ -38,18 +43,28 @@ public class BoardService {
     // }
 
     // 글쓰기 세션 처리
+    // @Transactional
+    // public Boolean 글쓰기(Board board){ // title, content
+    //     // log.info("session 1: " + session.getAttribute("principal"));
+    //     if(session.getAttribute("principal") != null){
+    //         User user= (User) session.getAttribute("principal");
+    //         board.setCount(0);
+    //         board.setUser(user);
+    //         boardRepository.save(board);
+    //         return true;
+    //     }else{
+    //         return false;
+    //     }
+    // }
+
     @Transactional
-    public Boolean 글쓰기(Board board){ // title, content
-        // log.info("session 1: " + session.getAttribute("principal"));
-        if(session.getAttribute("principal") != null){
-            User user= (User) session.getAttribute("principal");
-            board.setCount(0);
-            board.setUser(user);
-            boardRepository.save(board);
-            return true;
-        }else{
-            return false;
-        }
+    public Boolean 글쓰기(Board board, String user){ // title, content
+        User user1= userRepository.findByUsername(user).orElse(null);
+
+        board.setCount(0);
+        board.setUser(user1);
+        boardRepository.save(board);
+        return true;
     }
 
 
@@ -113,7 +128,8 @@ public class BoardService {
     UserRepository userRepository;
     
     @Transactional
-    public void 댓글쓰기(ReplySaveRequestDto replySaveRequestDto) {
+    // public void 댓글쓰기(ReplySaveRequestDto replySaveRequestDto) {
+    public void 댓글쓰기(ReplySaveRequestDto replySaveRequestDto, @AuthenticationPrincipal UserDetails user) {
         Board board=boardRepository.findById(replySaveRequestDto.getBoardId()).orElseThrow(()->{
             return new IllegalArgumentException("댓글쓰기 실패: 게시글아이디를 찾을 수 없습니다.");
         });
@@ -121,13 +137,27 @@ public class BoardService {
         //     return new IllegalArgumentException("댓글쓰기 실패: 유저아이디 찾을 수 없습니다.");
         // });
 
-        User user = (User) session.getAttribute("principal");
+
+        // User user = (User) session.getAttribute("principal");
+
+        // SecurityContext securityContext = SecurityContextHolder.getContext();
+        // Authentication authentication = securityContext.getAuthentication();
+        // UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+
+        // User user=userRepository.findByUsername(userDetails.getUsername()).orElseThrow(()->{
+        //     return new IllegalArgumentException("댓글쓰기 실패: 유저아이디 찾을 수 없습니다.");
+        // });
+
+        User user1=userRepository.findByUsername(user.getUsername()).orElseThrow(()->{
+            return new IllegalArgumentException("댓글쓰기 실패: 유저아이디 찾을 수 없습니다.");
+        });
 
         //dto -> entity로 변환하기
 
         // 방법1 -reply에 update메소드 추가하기
         Reply reply= new Reply();
-        reply.update(user,board, replySaveRequestDto.getContent());
+        // reply.update(user,board, replySaveRequestDto.getContent());
+        reply.update(user1,board, replySaveRequestDto.getContent());
 
         // 방법2-builder() 패턴사용하기
         // Reply reply= Reply.builder().user(user).board(board)

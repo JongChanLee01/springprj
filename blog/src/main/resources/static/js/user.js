@@ -22,6 +22,7 @@ let index={
        });
 
        $('#btn-delete').on('click',()=>{
+
             var del=confirm("정말로 탈퇴하시겠습니까?");
             if(del){
                 this.delete();
@@ -75,38 +76,42 @@ let index={
       $('#password').val(localStorage.getItem("password"));
     },
 
- login:function(){
-      let data={
-           username:$("#username").val(),
-           password:$("#password").val()
-      }
-      $.ajax({
-           type:"POST",
-           url:'/api/user/login',
-           data:JSON.stringify(data), // http body 데이터
-           contentType:"application/json; charset=utf-8",
-           dataType:"json"
-      }).done(function(resp){
-           if(resp.data==1){
-              alert("로그인이 완료되었습니다.");
-           }else{
-             alert("아이디와 비밀번호를 확인해주세요.");
-             $("#username").focus();
-             return false; // 다음 단계로 진행 안함.
-           }
-           console.log(resp);
-           location.href="/";
-      }).fail(function(error){
-           alert(JSON.stringify(error));
-      });
- },
+// login:function(){
+//      let data={
+//           username:$("#username").val(),
+//           password:$("#password").val()
+//      }
+//      $.ajax({
+//           type:"POST",
+//           url:'/api/user/login',
+//           data:JSON.stringify(data), // http body 데이터
+//           contentType:"application/json; charset=utf-8",
+//           dataType:"json"
+//      }).done(function(resp){
+//           if(resp.data==1){
+//              alert("로그인이 완료되었습니다.");
+//           }else{
+//             alert("아이디와 비밀번호를 확인해주세요.");
+//             $("#username").focus();
+//             return false; // 다음 단계로 진행 안함.
+//           }
+//           console.log(resp);
+//           location.href="/";
+//      }).fail(function(error){
+//           alert(JSON.stringify(error));
+//      });
+// },
 
  update:function(){
      let data={
        id:$('#id').val(),
+
+       // 추가
+       username:$('#username').val(),
        password:$("#password").val(),
        email:$('#email').val()
      }
+     console.log(data);
    $.ajax({
       type:"PUT",
       url:'/user',
@@ -141,7 +146,8 @@ let index={
        if(resp.data==1){
           alert("회원탈퇴가 완료되었습니다.");
           console.log(resp);
-          location.href="/user/logout";
+          //location.href="/user/logout";
+          location.href="/logout";
        }else{
           alert("비밀번호가 잘못되었습니다.");
           return false;

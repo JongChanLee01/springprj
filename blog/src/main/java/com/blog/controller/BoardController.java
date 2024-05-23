@@ -42,7 +42,12 @@ public class BoardController {
         return "index"; // index.jsp 파일 이름 (확장자 제외)
     }
 
-    @GetMapping("/board/writeForm")
+    // 글쓰기
+    // @GetMapping("/board/writeForm")
+    // public String saveForm(){
+    //     return "board/saveForm";
+    // }
+    @GetMapping("/board/form")
     public String saveForm(){
         return "board/saveForm";
     }
@@ -56,7 +61,7 @@ public class BoardController {
 
     @GetMapping("/board/{id}")
     public String findById(@PathVariable int id, Model model){
-        User user= (User) session.getAttribute("principal");
+        // User user= (User) session.getAttribute("principal");
         model.addAttribute("board", boardService.글상세보기(id));
         return "board/detail";
     }
@@ -67,4 +72,5 @@ public class BoardController {
         model.addAttribute("board", boardService.글상세보기(id));
         return "board/updateForm";
     }
+
 }

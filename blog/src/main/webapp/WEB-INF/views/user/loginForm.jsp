@@ -24,6 +24,10 @@ pageEncoding="UTF-8"%>
        <button id="btn-login" class="btn btn-primary">로그인</button>
    </form>
   <!-- <button id="btn-login" class="btn btn-primary">로그인</button> -->
+  <h3 class="text-red" id="h3" style="color:red">${error}</h3>
 </div>
 <script src="/js/user.js"></script>
+<script>
+    if($("#h3").html() !=""){ alert($("#h3").text()); }
+</script>
 <%@ include file="../layout/footer.jsp" %>

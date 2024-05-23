@@ -4,7 +4,8 @@
 <div class="container">
     <button class='btn btn-secondary' onclick="history.back()">돌아가기</button>
 
-    <c:if test="${board.user.id==principal.id}">
+    <%-- <c:if test="${board.user.id==principal.id}"> --%>
+    <c:if test="${board.user.id==principal.user.id}">
         <a href="/board/${board.id}/updateForm" class="btn btn-warning">수정</a>
         <button class='btn btn-danger' id="btn-delete">삭제</button>
     </c:if>
@@ -27,11 +28,13 @@
     <hr>
 
     <!-- 댓글 -->
-    <c:if test="${principal.id != null}">
+    <%-- <c:if test="${principal.id != null}"> --%>
+    <c:if test="${principal.user.id != null}">
         <div class="container">
             <div class="card">
             <div class="card-header">댓글달기</div>
             <form>
+                <input type="hidden" id="userId" value="${board.user.id}">
                 <input type="hidden" id="boardId" value="${board.id}">
                 <div class="card-body d-flex justify-content-between">
                     <textarea style="width:90%;" class="form-control" id="reply-content"></textarea>
@@ -48,7 +51,8 @@
                     <div>${status.index+1} : ${reply.content}</div>
                         <div class="d-flex">
                         <div class="font-italic"> 작성자 : ${reply.user.username} </div>
-                        <c:if test="${reply.user.id eq principal.id}">
+                        <%-- <c:if test="${reply.user.id eq principal.id}"> --%>
+                        <c:if test="${reply.user.id eq principal.user.id}">
                             <button onClick="index.replyDelete(${board.id},${reply.id})" class="badge">삭제</button>
                             <button onClick="index.replyUpdate(${board.id},${reply.id})" class="badge">수정</button>
                         </c:if>

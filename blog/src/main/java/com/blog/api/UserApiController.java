@@ -9,12 +9,19 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class UserApiController {
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private AuthenticationManager authenticationManager;
 
     // @PostMapping("api/user")
     // public ResponseDto<Integer> save(@RequestBody User user){
@@ -60,15 +67,34 @@ public class UserApiController {
 
     // key=value, x-www-form-urlencode의 형태로 데이터를 받고 싶으면 @RequestBody를 생략한다.
     // JSON형태로 받고 싶으면 @RequestBody를 붙인다.
+    // @PutMapping("/user")
+    // public ResponseDto<Integer> update(@RequestBody User user){
+    //     userService.회원수정(user);
+    //     // 여기서는 트랜잭션이 종료되기 때문에 DB에 값은 변경이 돼있다.
+    //     // 하지만 세션값은 변경되지 않은 상태이기 때문에 우리가 직접 세션값을 변경해준다.
+    //
+    //     return new ResponseDto<Integer>(HttpStatus.OK.value(), 1);
+    // }
+
+    // 회원정보수정
     @PutMapping("/user")
     public ResponseDto<Integer> update(@RequestBody User user){
         userService.회원수정(user);
-        // 여기서는 트랜잭션이 종료되기 때문에 DB에 값은 변경이 돼있다.
-        // 하지만 세션값은 변경되지 않은 상태이기 때문에 우리가 직접 세션값을 변경해준다.
+
+        // 세션등록
+        // Authentication authentication=authenticationManager
+        //         .authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));
+        UsernamePasswordAuthenticationToken auth=new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword());
+
+        Authentication authentication=authenticationManager.authenticate(auth);
+
+        SecurityContextHolder.getContext().setAuthentication(authentication);
 
         return new ResponseDto<Integer>(HttpStatus.OK.value(), 1);
     }
 
+
+    // 회원탈퇴
     @DeleteMapping("/user/delete/{id}")
     public ResponseDto<Integer> delete(@PathVariable Integer id, @RequestBody User user){
         int result= userService.회원탈퇴(id, user);

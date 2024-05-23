@@ -5,19 +5,23 @@
 <form>
     <div class="form-group">
         <label for="id">ID</label>
-        <input type="text" class="form-control" id="id" readonly value="${principal.id}">
+        <%-- <input type="text" class="form-control" id="id" readonly value="${principal.id}"> --%>
+        <input type="text" class="form-control" id="id" readonly value="${principal.user.id}">
     </div>
     <div class="form-group">
         <label for="username">Username</label>
-        <input type="text" id="username" class="form-control" readonly value="${principal.username}" placeholder="${principal.username}" >
+        <%-- <input type="text" id="username" class="form-control" readonly value="${principal.username}" placeholder="${principal.username}" > --%>
+        <input type="text" id="username" class="form-control" readonly value="${principal.user.username}" >
     </div>
     <div class="form-group">
         <label for="password">Password</label>
-        <input type="password" id="password" class="form-control" value="${principal.password}">
+        <%-- <input type="password" id="password" class="form-control" value="${principal.password}"> --%>
+        <input type="password" id="password" class="form-control" value="${principal.user.password}">
     </div>
     <div class="form-group">
         <label for="email">이메일(e-mail)</label>
-        <input type="email" id="email" class="form-control" value="${principal.email}">
+        <%-- <input type="email" id="email" class="form-control" value="${principal.email}"> --%>
+        <input type="email" id="email" class="form-control" value="${principal.user.email}">
     </div>
 </form>
 <button id="btn-update" class="btn btn-primary">회원수정완료</button>

@@ -9,11 +9,16 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
@@ -105,17 +110,34 @@ public class UserController {
     //     return "user/updateForm";
     // }
 
-    @GetMapping("/user/updateForm")
+    // @GetMapping("/user/updateForm")
+    // public String updateForm(Model model){
+    //     model.addAttribute("principal",session.getAttribute("principal"));
+    //     return "/user/updateForm";
+    // }
+    @GetMapping("/user/form")
     public String updateForm(Model model){
-        model.addAttribute("principal",session.getAttribute("principal"));
-        return "/user/updateForm";
+
+        // SecurityContext securityContext = SecurityContextHolder.getContext();
+        // Authentication authentication = securityContext.getAuthentication();
+        // UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+
+        return "user/updateForm";
     }
 
 
     // 회원탈퇴
     @GetMapping("/user/deleteForm")
     public String deleteForm(Model model){
-        model.addAttribute("principal",session.getAttribute("principal"));
-        return "/user/deleteForm";
+   //     model.addAttribute("principal",session.getAttribute("principal"));
+        return "user/deleteForm";
+    }
+
+
+    // 로그인 실패시 에러처리
+    @GetMapping("/auth/fail")
+    public String onFailedLogin(RedirectAttributes redirectAttributes) {
+        redirectAttributes.addFlashAttribute("error", "Invalid username or password.");
+        return "redirect:/auth/loginForm";
     }
 }

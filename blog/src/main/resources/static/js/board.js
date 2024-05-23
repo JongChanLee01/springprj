@@ -28,6 +28,9 @@ let index={
   // 댓글 작성
   replySave:function(){
       let data={
+        // 추가
+        userId:$("#userId").val(),
+
         boardId:$("#boardId").val(),
         content:$("#reply-content").val(),
       }
