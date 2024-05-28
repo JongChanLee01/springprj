@@ -15,15 +15,15 @@ public class SecurityConfig{
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        // permitAll() 메소드는 어떠한 보안 요구 없이 요청을 허용해준다.
+        // 보안에 취약
         http.authorizeRequests((requests) ->
                requests
                    .requestMatchers("/css/**", "/js/**", "/img/**").permitAll()
                    .requestMatchers("/", "/members/**", "/item/**", "/images/**","/mail/**").permitAll()
                    .anyRequest().authenticated()
-        );
+        ); // 위 경로를 제외한 요청은 인증을 요구
 
-        // permitAll() 메소드는 어떠한 보안 요구 없이 요청을 허용해준다.
-        // 보안에 취약
         http.formLogin((formLogin)->
                formLogin
                    .loginPage("/members/login")
