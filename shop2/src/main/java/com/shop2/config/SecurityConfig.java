@@ -21,6 +21,7 @@ public class SecurityConfig{
                requests
                    .requestMatchers("/css/**", "/js/**", "/img/**").permitAll()
                    .requestMatchers("/", "/members/**", "/item/**", "/images/**","/mail/**").permitAll()
+                   .requestMatchers("/admin/**").hasRole("ADMIN")
                    .anyRequest().authenticated()
         ); // 위 경로를 제외한 요청은 인증을 요구
 
@@ -38,6 +39,11 @@ public class SecurityConfig{
                        .logoutSuccessUrl("/").permitAll()
                )
         ;
+
+        http.exceptionHandling((exception)->
+               exception.authenticationEntryPoint(new CustomAuthenticationEntryPoint())
+        );
+
         return http.build();
     }
 
