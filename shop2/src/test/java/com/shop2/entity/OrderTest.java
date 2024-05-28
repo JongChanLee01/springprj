@@ -3,6 +3,7 @@ package com.shop2.entity;
 import com.shop2.constant.ItemSellStatus;
 import com.shop2.repository.ItemRepository;
 import com.shop2.repository.MemberRepository;
+import com.shop2.repository.OrderItemRepository;
 import com.shop2.repository.OrderRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityNotFoundException;
@@ -11,6 +12,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
@@ -18,7 +20,7 @@ import java.time.LocalDateTime;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-//@TestPropertySource(locations="classpath:application-test.properties")
+// @TestPropertySource(locations="classpath:application-test.properties")
 @Transactional
 class OrderTest {
 
@@ -64,6 +66,8 @@ class OrderTest {
             order.getOrderItems().add(orderItem);
         }
 
+        //  Java의 Repository 인터페이스에서 사용되는 saveAndFlush 메소드는 엔티티를 저장하고(save),
+        //  즉시 데이터베이스에 반영(flush)하는 역할
         orderRepository.saveAndFlush(order);
         em.clear();
 
@@ -98,4 +102,22 @@ class OrderTest {
         return order;
     }
 
+
+    @Autowired
+    OrderItemRepository orderItemRepository;
+
+    @Test
+    @DisplayName("지연 로딩 테스트")
+    public void lazyLoadingTest(){
+        Order order = this.createOrder();
+        Long orderItemId = order.getOrderItems().get(0).getId();
+        em.flush();
+        em.clear();
+        OrderItem orderItem = orderItemRepository.findById(orderItemId)
+                .orElseThrow(EntityNotFoundException::new);
+        System.out.println("Order class : " + orderItem.getOrder().getClass());
+        System.out.println("===========================");
+        orderItem.getOrder().getOrderDate();
+        System.out.println("===========================");
+    }
 }
