@@ -31,10 +31,11 @@ public class ItemImgService {
             imgName = fileService.uploadFile(itemImgLocation, oriImgName,
                     itemImgFile.getBytes());
             imgUrl = "/images/item/" + imgName;
-        }
 
-        //상품 이미지 정보 저장
-        itemImg.updateItemImg(oriImgName, imgName, imgUrl);
-        itemImgRepository.save(itemImg);
+            //상품 이미지 정보 저장
+            itemImg.updateItemImg(oriImgName, imgName, imgUrl);
+            itemImgRepository.save(itemImg);
+        }
+        
     }
 }
