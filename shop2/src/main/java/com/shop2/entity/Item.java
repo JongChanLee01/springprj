@@ -1,6 +1,7 @@
 package com.shop2.entity;
 
 import com.shop2.constant.ItemSellStatus;
+import com.shop2.dto.ItemFormDto;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -13,7 +14,8 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @ToString
-public class Item {
+// public class Item {
+public class Item extends BaseEntity{
     @Id
     @Column(name = "item_id")
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -35,6 +37,14 @@ public class Item {
     @Enumerated(EnumType.STRING)
     private ItemSellStatus itemSellStatus; //상품 판매 상태
 
-    private LocalDateTime regTime; // 등록시간
-    private LocalDateTime updateTime; // 수정시간
+    // private LocalDateTime regTime; // 등록시간
+    // private LocalDateTime updateTime; // 수정시간
+
+    public void updateItem(ItemFormDto itemFormDto){
+        this.itemNm = itemFormDto.getItemNm();
+        this.price = itemFormDto.getPrice();
+        this.stockNumber = itemFormDto.getStockNumber();
+        this.itemDetail = itemFormDto.getItemDetail();
+        this.itemSellStatus = itemFormDto.getItemSellStatus();
+    }
 }
