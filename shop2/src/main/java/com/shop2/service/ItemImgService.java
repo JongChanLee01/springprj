@@ -33,11 +33,10 @@ public class ItemImgService {
                     itemImgFile.getBytes());
             imgUrl = "/images/item/" + imgName;
 
-            //상품 이미지 정보 저장
-            itemImg.updateItemImg(oriImgName, imgName, imgUrl);
-            itemImgRepository.save(itemImg);
         }
-
+        //상품 이미지 정보 저장
+        itemImg.updateItemImg(oriImgName, imgName, imgUrl);
+        itemImgRepository.save(itemImg);
     }
 
     public void updateItemImg(Long itemImgId, MultipartFile itemImgFile) throws Exception{
