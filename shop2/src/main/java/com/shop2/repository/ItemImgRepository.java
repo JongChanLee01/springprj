@@ -8,7 +8,7 @@ import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import java.util.List;
 
 // public interface ItemImgRepository extends JpaRepository<ItemImg, Long> {
-public interface ItemImgRepository extends JpaRepository<ItemImg, Long>,
-        QuerydslPredicateExecutor<Item>, ItemRepositoryCustom {
+public interface ItemImgRepository extends JpaRepository<ItemImg, Long> {
     List<ItemImg> findByItemIdOrderByIdAsc(Long itemId);
+    ItemImg findByItemIdAndRepimgYn(Long itemId, String repimgYn);
 }
