@@ -19,7 +19,7 @@ public class SecurityConfig{
         // 보안에 취약
         http.authorizeRequests((requests) ->
                requests
-                   .requestMatchers("/css/**", "/js/**", "/img/**").permitAll()
+                   .requestMatchers("/css/**", "/js/**", "/imgs/**").permitAll()
                    .requestMatchers("/", "/members/**", "/item/**", "/images/**","/mail/**").permitAll()
                    .requestMatchers("/admin/**").hasRole("ADMIN")
                    .anyRequest().authenticated()
@@ -28,7 +28,7 @@ public class SecurityConfig{
         http.formLogin((formLogin)->
                formLogin
                    .loginPage("/members/login")
-                   .defaultSuccessUrl("/")
+                   .defaultSuccessUrl("/",true)
                    .usernameParameter("email")
                    .failureUrl("/members/login/error").permitAll()
                )

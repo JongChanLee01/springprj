@@ -8,23 +8,24 @@
     <script th:inline="javascript">
 
         $(document).ready(function(){
-             $("#searchBtn").on("click",function(e) {
-                 e.preventDefault();
-               page(0);
-         });
+            $("#searchBtn").on("click",function(e) {
+                e.preventDefault();
+                page(0);
+            });
+            $(".page-item").css("cursor","pointer");
         });
 
         function page(page){
             var searchDateType = $("#searchDateType").val();
-              var searchSellStatus = $("#searchSellStatus").val();
-             var searchBy = $("#searchBy").val();
-              var searchQuery = $("#searchQuery").val();
+            var searchSellStatus = $("#searchSellStatus").val();
+            var searchBy = $("#searchBy").val();
+            var searchQuery = $("#searchQuery").val();
 
-               location.href="/admin/items/" + page + "?searchDateType=" + searchDateType
-                   + "&searchSellStatus=" + searchSellStatus
-                  + "&searchBy=" + searchBy
+            location.href="/admin/items/" + page + "?searchDateType=" + searchDateType
+                + "&searchSellStatus=" + searchSellStatus
+                + "&searchBy=" + searchBy
                 + "&searchQuery=" + searchQuery;
-            }
+        }
 
     </script>
 </th:block>
