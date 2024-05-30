@@ -28,6 +28,25 @@ public class OrderItem {
 
     private int count; //수량
 
-    private LocalDateTime regTime;
-    private LocalDateTime updateTime;
+    // private LocalDateTime regTime;
+    // private LocalDateTime updateTime;
+
+    public static OrderItem createOrderItem(Item item, int count){
+        OrderItem orderItem = new OrderItem();
+        orderItem.setItem(item);
+        orderItem.setCount(count);
+        orderItem.setOrderPrice(item.getPrice());
+        item.removeStock(count);
+        return orderItem;
+    }
+
+    // 개별상품 총 주문금액
+    public int getTotalPrice(){
+        return orderPrice*count;
+    }
+
+    // 주문 취소한 경우
+    public void cancel() {
+        this.getItem().addStock(count);
+    }
 }
