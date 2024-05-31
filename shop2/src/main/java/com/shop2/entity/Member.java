@@ -28,16 +28,32 @@ public class Member extends BaseEntity{
 
     private String password;
 
-    private String address;
+    // private String address; // 우편 번호
+    private String zipcode; // 우편 번호
+
+    private String streetaddr; // 지번 주소
+
+    private String detailaddr; // 상세 주소
 
     @Enumerated(EnumType.STRING)
     private Role role;
+
+    private String provider;
+    private String providerId;
 
     public static Member createMember(MemberFormDto memberFormDto, PasswordEncoder passwordEncoder){
         Member member = new Member(); // 이거를 생성 안하고 바로 this를 이용해서
         member.setName(memberFormDto.getName()); // this.name = memverFormDto.getName() 이렇게 해도됨
         member.setEmail(memberFormDto.getEmail());
-        member.setAddress(memberFormDto.getAddress());
+
+        // member.setAddress(memberFormDto.getAddress());
+
+
+        // member에 각 속성을 set하기 위해 memberFormDto에 추가해야할 내용 Zipcode() 우편번호 찾기
+        member.setZipcode(memberFormDto.getZipcode());
+        member.setDetailaddr(memberFormDto.getDetailaddr());
+        member.setStreetaddr(memberFormDto.getStreetaddr());
+
 
         // 비밀번호 암호화
         String password = passwordEncoder.encode(memberFormDto.getPassword());
@@ -50,7 +66,12 @@ public class Member extends BaseEntity{
         Member member = new Member();
         member.setName(memberFormDto.getName());
         member.setEmail(memberFormDto.getEmail());
-        member.setAddress(memberFormDto.getAddress());
+        // member.setAddress(memberFormDto.getAddress());
+
+        // member에 각 속성을 set하기 위해 memberFormDto에 추가해야할 내용 Zipcode() 우편번호 찾기
+        member.setZipcode(memberFormDto.getZipcode());
+        member.setDetailaddr(memberFormDto.getDetailaddr());
+        member.setStreetaddr(memberFormDto.getStreetaddr());
 
         String password = passwordEncoder.encode(memberFormDto.getPassword());
 
