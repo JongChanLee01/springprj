@@ -1,20 +1,21 @@
 package com.shop2.controller;
 
+import com.shop2.dto.MailDto;
 import com.shop2.dto.MemberFormDto;
 import com.shop2.entity.Member;
 import com.shop2.repository.MemberRepository;
+import com.shop2.service.MailService;
 import com.shop2.service.MemberService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 
@@ -27,6 +28,7 @@ public class MemberController {
 
     private final MemberService memberService;
     private final PasswordEncoder passwordEncoder;
+    private final MailService mailService;
 
     @GetMapping(value = "/new")
     public String memberForm(Model model){
@@ -112,5 +114,35 @@ public class MemberController {
         modelMap.addAttribute("member", member);
 
         return "mypage/myInfo";
+    }
+
+    // 회원 비밀번호 찾기
+    @GetMapping(value = "/findMember")
+    public String findMember(Model model) {
+        return "/member/findMemberForm";
+    }
+
+    // 비밀번호 찾기시, 임시 비밀번호 담긴 이메일 보내기
+    @Transactional
+    @PostMapping("/sendEmail")
+    public String sendEmail(@RequestParam("memberEmail") String memberEmail){
+        MailDto dto = mailService.createMailAndChangePassword(memberEmail);
+        mailService.mailSend(dto);
+
+        return "/member/memberLoginForm";
+    }
+
+    // 회원 아이디 찾기
+
+    @RequestMapping(value = "/findId", method = RequestMethod.POST)
+    @ResponseBody
+    public String findId(@RequestParam("memberEmail") String memberEmail) {
+        String email = String.valueOf(memberRepository.findByEmail(memberEmail));
+        System.out.println("회원 이메일 = " + email);
+        if(email == null) {
+            return null;
+        } else {
+            return email;
+        }
     }
 }

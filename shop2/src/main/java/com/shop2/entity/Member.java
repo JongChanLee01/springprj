@@ -80,4 +80,8 @@ public class Member extends BaseEntity{
         member.setRole(Role.ADMIN); // Role 설정
         return member;
     }
+
+    public void updatePassword(String encodePw) {
+        this.setPassword(encodePw);
+    }
 }
