@@ -2,21 +2,29 @@ package com.shop2.controller;
 
 import com.shop2.dto.MemberFormDto;
 import com.shop2.entity.Member;
+import com.shop2.repository.MemberRepository;
 import com.shop2.service.MemberService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.security.Principal;
+
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/members")
 public class MemberController {
+    @Autowired
+    private MemberRepository memberRepository;
+
     private final MemberService memberService;
     private final PasswordEncoder passwordEncoder;
 
@@ -96,5 +104,13 @@ public class MemberController {
         model.addAttribute("loginErrorMsg", "아이디 또는 비밀번호를 확인해주세요");
         return "/member/memberLoginForm";
     }
-    
+
+    @GetMapping("/loginInfo")
+    public String memberInfo(Principal principal, ModelMap modelMap){
+        String loginId = principal.getName();
+        Member member = memberRepository.findByEmail(loginId);
+        modelMap.addAttribute("member", member);
+
+        return "mypage/myInfo";
+    }
 }
