@@ -23,7 +23,14 @@ public class SecurityConfig{
                    .requestMatchers("/", "/members/**", "/item/**", "/images/**","/mail/**").permitAll()
                    .requestMatchers("/admin/**").hasRole("ADMIN")
                    .anyRequest().authenticated()
-        ); // 위 경로를 제외한 요청은 인증을 요구
+        );
+
+        // 위 경로를 제외한 요청은 인증을 요구
+
+        http.csrf((csrf)-> csrf
+            .ignoringRequestMatchers(new AntPathRequestMatcher("/mail/**"))
+            .ignoringRequestMatchers("/members/findId")
+        );
 
         http.formLogin((formLogin)->
                formLogin
