@@ -2,6 +2,7 @@ package com.shop2.controller;
 
 import com.shop2.dto.MailDto;
 import com.shop2.dto.MemberFormDto;
+import com.shop2.dto.MemberUpdateDto;
 import com.shop2.entity.Member;
 import com.shop2.repository.MemberRepository;
 import com.shop2.service.MailService;
@@ -144,5 +145,42 @@ public class MemberController {
         } else {
             return email;
         }
+    }
+
+
+    // 회원정보 수정
+    // 수정 전 비밀번호 체크
+    @GetMapping("/checkPwdForm")
+    public String checkPwdView() {
+        return "member/passwordCheckForm";
+    }
+
+    @GetMapping("/checkPwd")
+    @ResponseBody
+    public boolean checkPassword(Principal principal, Member member,
+             @RequestParam String checkPassword, Model model){
+
+        String loginId = principal.getName();
+        Member memberId = memberRepository.findByEmail(loginId);
+        // memberRepository에서 이메일을 찾는다.
+        return memberService.checkPassword(memberId, checkPassword);
+    }
+
+    // 회원 정보 변경 폼 (GET)
+    @GetMapping(value = "/updateForm")
+    public String updateMemberForm(Principal principal, Model model) {
+        String loginId = principal.getName();
+        Member memberId = memberRepository.findByEmail(loginId);
+        model.addAttribute("member", memberId);
+
+        return "/settings/memberUpdateForm";
+    }
+
+    // 회원 정보 변경 (POST)
+    @PostMapping(value = "/updateForm")
+    public String updateMember(@Valid MemberUpdateDto memberUpdateDto, Model model) {
+        model.addAttribute("member", memberUpdateDto);
+        memberService.updateMember(memberUpdateDto);
+        return "redirect:/members/loginInfo";
     }
 }

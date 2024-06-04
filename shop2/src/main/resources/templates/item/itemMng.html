@@ -48,6 +48,7 @@
                 <td>상품아이디</td>
                 <td>상품명</td>
                 <td>상태</td>
+                <td>상품종류</td>
                 <td>등록자</td>
                 <td>등록일</td>
             </tr>
@@ -59,6 +60,7 @@
                     <a th:href="'/admin/item/'+${item.id}" th:text="${item.itemNm}"></a>
                 </td>
                 <td th:text="${item.itemSellStatus == T(com.shop2.constant.ItemSellStatus).SELL} ? '판매중' : '품절'"></td>
+                <td th:text="${item.itemCategory}"></td>
                 <td th:text="${item.createdBy}"></td>
                 <td th:text="${item.regTime}"></td>
             </tr>

@@ -1,5 +1,6 @@
 package com.shop2.repository;
 
+import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Wildcard;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -83,8 +84,17 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom{
                 ;   return new PageImpl<>(content, pageable, total);
     }
 
-    private BooleanExpression itemNmLike(String searchQuery){
-        return StringUtils.isEmpty(searchQuery) ? null : QItem.item.itemNm.like("%" + searchQuery + "%");
+    // private BooleanExpression itemNmLike(String searchQuery){
+    //     return StringUtils.isEmpty(searchQuery) ? null : QItem.item.itemNm.like("%" + searchQuery + "%");
+    // }
+    private BooleanBuilder itemNmLike(String searchQuery){
+        BooleanBuilder builder = new BooleanBuilder();
+        builder.or(QItem.item.itemNm.like("%" + searchQuery + "%"));
+        return builder;
+    }
+
+    private BooleanExpression itemCategoryLike(String searchQuery){
+        return StringUtils.isEmpty(searchQuery) ? null : QItem.item.itemCategory.like("%" + searchQuery + "%");
     }
 
     @Override
@@ -97,6 +107,7 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom{
                         new QMainItemDto(
                                 item.id,
                                 item.itemNm,
+                                item.itemCategory,
                                 item.itemDetail,
                                 itemImg.imgUrl,
                                 item.price)
@@ -104,7 +115,10 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom{
                 .from(itemImg)
                 .join(itemImg.item, item)
                 .where(itemImg.repimgYn.eq("Y"))
-                .where(itemNmLike(itemSearchDto.getSearchQuery()))
+                .where(itemNmLike(itemSearchDto.getSearchQuery())
+                    .or(itemCategoryLike(itemSearchDto.getSearchQuery())
+                    )
+                )
                 .orderBy(item.id.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
@@ -115,7 +129,10 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom{
                 .from(itemImg)
                 .join(itemImg.item, item)
                 .where(itemImg.repimgYn.eq("Y"))
-                .where(itemNmLike(itemSearchDto.getSearchQuery()))
+                .where(itemNmLike(itemSearchDto.getSearchQuery())
+                    .or(itemCategoryLike(itemSearchDto.getSearchQuery())
+                    )
+                )
                 .fetchOne()
                 ;
 

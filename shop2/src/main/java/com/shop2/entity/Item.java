@@ -28,6 +28,9 @@ public class Item extends BaseEntity{
     @Column(name="price", nullable = false)
     private int price; //가격
 
+    @Column(nullable = false)
+    private String itemCategory; //상품종류
+
     @Column(nullable= false)
     private int stockNumber; //재고수량
 
@@ -44,6 +47,7 @@ public class Item extends BaseEntity{
     public void updateItem(ItemFormDto itemFormDto){
         this.itemNm = itemFormDto.getItemNm();
         this.price = itemFormDto.getPrice();
+        this.itemCategory = itemFormDto.getItemCategory();
         this.stockNumber = itemFormDto.getStockNumber();
         this.itemDetail = itemFormDto.getItemDetail();
         this.itemSellStatus = itemFormDto.getItemSellStatus();

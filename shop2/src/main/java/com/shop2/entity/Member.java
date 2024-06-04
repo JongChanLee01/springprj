@@ -6,7 +6,11 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
+
+import java.util.Collection;
 
 @Entity
 @Table(name="member")
@@ -14,7 +18,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Setter
 @ToString
 // public class Member {
-public class Member extends BaseEntity{
+// public class Member extends BaseEntity {
+public class Member extends BaseEntity implements UserDetails {
 
     @Id
     @Column(name="member_id")
@@ -27,6 +32,8 @@ public class Member extends BaseEntity{
     private String email;
 
     private String password;
+
+    private String originalpassword;
 
     // private String address; // 우편 번호
     private String zipcode; // 우편 번호
@@ -81,7 +88,63 @@ public class Member extends BaseEntity{
         return member;
     }
 
-    public void updatePassword(String encodePw) {
-        this.setPassword(encodePw);
+    // public void updatePassword(String encodePw) {
+    //     this.setPassword(encodePw);
+    // }
+
+    // 회원수정 메소드
+    public void updateUsername(String name) {
+        this.name = name;
+    }
+
+    public void updatePassword(String password) {
+        this.password = password;
+    }
+
+    public void updateOriginalPassword(String originalpassword) {
+        this.originalpassword = originalpassword;
+    }
+
+    public void updateZipCode(String zipcode) {
+        this.zipcode = zipcode;
+    }
+
+    public void updateStreetAddress(String streetaddress) {
+        this.streetaddr = streetaddress;
+    }
+
+    public void updateDetailAddress(String detailaddress) {
+        this.detailaddr = detailaddress;
+    }
+
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return null;
+    }
+
+    @Override
+    public String getUsername() {
+        return null;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return false;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return false;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return false;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return false;
     }
 }

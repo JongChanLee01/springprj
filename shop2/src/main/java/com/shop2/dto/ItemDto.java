@@ -11,6 +11,7 @@ public class ItemDto {
     private Long id;
     private String itemNm;
     private Integer price;
+    private String itemCategory; //상품종류
     private String itemDetail;
     private String sellStatCd;
     private LocalDateTime regTime;
