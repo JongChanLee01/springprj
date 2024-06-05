@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" href="/common.css" />
+    <style>
+        div.box { padding: 30px; }
+        table { border-collapse: collapse; width: 400px; margin-bottom: 20px; }
+        td { border: 1px solid #aaa; padding: 8px; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="box">
+        <h1>사용자 페이지</h1>
+        <table>
+            <tr>
+                <td>OAuth2 사용자</td>
+                <td th:text="${#authentication.principal}"></td>
+            </tr>
+        </table>
+        <a class="btn" href="/">첫 페이지</a>
+        <a class="btn" href="/logout_processing">로그아웃</a>
+    </div>
+</div>
+</body>
+</html>
