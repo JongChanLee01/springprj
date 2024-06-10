@@ -6,6 +6,7 @@ import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -32,4 +33,12 @@ public class Question {
 
     // 수정 일시
     private LocalDateTime modifyDate;
+
+    // 추천
+    @ManyToMany
+    Set<SiteUser> voter;
+
+    // 뷰
+    @Column(columnDefinition = "integer default 0", nullable = false)
+    private int view;
 }

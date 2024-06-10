@@ -23,6 +23,7 @@
 <!-- 자바스크립트 End -->
 
 <script layout:fragment="script" type='text/javascript'>
+    // 삭제
     const delete_elements = document.getElementsByClassName("delete");
     Array.from(delete_elements).forEach(function(element) {
         element.addEventListener('click', function() {
@@ -31,6 +32,16 @@
             };
         });
     });
+
+    // 추천
+    const recommend_elements = document.getElementsByClassName("recommend");
+    Array.from(recommend_elements).forEach(function(element) {
+    element.addEventListener('click', function() {
+        if(confirm("정말로 추천하시겠습니까?")) {
+            location.href = this.dataset.uri;
+        };
+    });
+});
 </script>
 </body>
 </html>

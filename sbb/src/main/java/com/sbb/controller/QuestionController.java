@@ -2,6 +2,7 @@ package com.sbb.controller;
 
 import com.sbb.entity.Question;
 import com.sbb.entity.SiteUser;
+import com.sbb.exception.DataNotFoundException;
 import com.sbb.form.AnswerForm;
 import com.sbb.form.QuestionForm;
 import com.sbb.repository.QuestionRepository;
@@ -20,6 +21,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.security.Principal;
 import java.util.List;
+import java.util.Optional;
 
 @RequestMapping("/question")
 @RequiredArgsConstructor
@@ -132,5 +134,29 @@ public class QuestionController {
         }
         this.questionService.delete(question);
         return "redirect:/";
+    }
+
+    // 조회수
+    public Question getQuestion(Integer id) {
+        Optional<Question> question = this.questionRepository.findById(id);
+        if (question.isPresent()) {
+            Question question1 = question.get();
+            question1.setView(question1.getView()+1);
+            this.questionRepository.save(question1);
+            return question1;
+        } else {
+            throw new DataNotFoundException("question not found");
+        }
+    }
+
+
+    // 추천
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/vote/{id}")
+    public String questionVote(Principal principal, @PathVariable("id") Integer id) {
+        Question question = this.questionService.getQuestion(id);
+        SiteUser siteUser = this.userService.getUser(principal.getName());
+        this.questionService.vote(question, siteUser);
+        return String.format("redirect:/question/detail/%s", id);
     }
 }

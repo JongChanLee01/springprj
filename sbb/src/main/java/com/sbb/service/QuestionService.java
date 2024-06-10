@@ -33,7 +33,15 @@ public class QuestionService {
         // 참조하더라도 NPE가 발생하지 않도록 도와준다.
         Optional<Question> question = this.questionRepository.findById(id);
         if(question.isPresent()){
-            return question.get();
+            // 조회수 추가
+            Question question1 = question.get();
+            question1.setView(question1.getView()+1);
+            this.questionRepository.save(question1);
+
+            // return question.get();
+
+            // 조회수 추가
+            return question1;
         }else {
             throw new DataNotFoundException("question not found");
         }
@@ -79,4 +87,17 @@ public class QuestionService {
         this.questionRepository.delete(question);
     }
 
+
+    // 회원 프로필
+    public List<Question> getCurrentListByUser(String username, int num) {
+        Pageable pageable = PageRequest.of(0, num);
+        return questionRepository.findCurrentQuestion(username, pageable);
+    }
+
+
+    // 추천
+    public void vote(Question question, SiteUser siteUser) {
+        question.getVoter().add(siteUser);
+        this.questionRepository.save(question);
+    }
 }

@@ -1,21 +1,29 @@
 package com.sbb.controller;
 
 import com.sbb.form.UserCreateForm;
+import com.sbb.service.AnswerService;
+import com.sbb.service.QuestionService;
 import com.sbb.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.security.Principal;
 
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/user")
 public class UserController {
     private final UserService userService;
+    private final QuestionService questionService;
+    private final AnswerService answerService;
 
     @GetMapping("/signup")
     public String signup(UserCreateForm userCreateForm){
@@ -53,4 +61,19 @@ public class UserController {
     }
 
 
+    // 유저 프로필
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/profile")
+    public String profile(Model model, Principal principal) {
+        String username = principal.getName();
+        model.addAttribute("username", username);
+        model.addAttribute("questionList",
+                questionService.getCurrentListByUser(username, 5));
+        model.addAttribute("answerList",
+                answerService.getCurrentListByUser(username, 5));
+
+        // model.addAttribute("commentList",
+        // commentService.getCurrentListByUser(username, 5));
+        return "profile";
+    }
 }

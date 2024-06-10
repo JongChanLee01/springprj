@@ -6,9 +6,12 @@ import com.sbb.entity.SiteUser;
 import com.sbb.exception.DataNotFoundException;
 import com.sbb.repository.AnswerRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -56,5 +59,17 @@ public class AnswerService {
     // 답변 삭제
     public void delete(Answer answer) {
         this.answerRepository.delete(answer);
+    }
+
+
+    // 유저 프로필
+    public List<Answer> getCurrentListByUser(String username, int num) {
+        Pageable pageable = PageRequest.of(0, num);
+        return answerRepository.findCurrentAnswer(username, pageable);
+    }
+
+    public void vote(Answer answer, SiteUser siteUser) {
+        answer.getVoter().add(siteUser);
+        this.answerRepository.save(answer);
     }
 }
