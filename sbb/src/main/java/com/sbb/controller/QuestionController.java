@@ -1,15 +1,18 @@
 package com.sbb.controller;
 
+import com.sbb.entity.Answer;
 import com.sbb.entity.Question;
 import com.sbb.entity.SiteUser;
 import com.sbb.exception.DataNotFoundException;
 import com.sbb.form.AnswerForm;
 import com.sbb.form.QuestionForm;
 import com.sbb.repository.QuestionRepository;
+import com.sbb.service.AnswerService;
 import com.sbb.service.QuestionService;
 import com.sbb.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -23,6 +26,7 @@ import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 
+@Slf4j
 @RequestMapping("/question")
 @RequiredArgsConstructor
 @Controller
@@ -31,6 +35,7 @@ public class QuestionController {
     private final QuestionRepository questionRepository;
     private final QuestionService questionService;
     private final UserService userService;
+    private final AnswerService answerService;
 
     // @GetMapping("/list")
     // //@ResponseBody //이제 템플릿을 사용하기 때문에 기존에 사용하던 @ResponseBody 애너테이션은 필요 없으므로 삭제
@@ -59,13 +64,33 @@ public class QuestionController {
     }
 
 
-    @GetMapping("/detail/{id}")
-    public String detail(Model model, @PathVariable("id") Integer id, AnswerForm answerForm){
+    // @GetMapping("/detail/{id}")
+    // public String detail(Model model, @PathVariable("id") Integer id, AnswerForm answerForm){
+    //
+    //     Question question = this.questionService.getQuestion(id);
+    //     model.addAttribute("question", question);
+    //     return "question_detail";
+    // }
+
+    // 답변 페이징 만들기
+    @GetMapping(value = "/detail/{id}")
+    public String detail(Model model, @PathVariable("id") Integer id, AnswerForm answerForm, @RequestParam(value = "answerPage", defaultValue = "0") int answerPage) {
 
         Question question = this.questionService.getQuestion(id);
+
+        Page<Answer> answerPaging = this.answerService.getList(question, answerPage);
+
         model.addAttribute("question", question);
+        model.addAttribute("answerPaging", answerPaging);
+
+        log.info("answerPaging,{}",answerPaging);
+
         return "question_detail";
+
     }
+
+
+
 
     // @PreAuthorize("isAuthenticated()")는 로그인을 하지 않고 질문을 작성 하였을때
     // Principal객체가 null일때 오류를 방지해줄때 쓰는 어노테이션

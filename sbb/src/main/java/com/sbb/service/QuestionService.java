@@ -80,8 +80,8 @@ public class QuestionService {
         List<Sort.Order> sorts = new ArrayList<>();
         sorts.add(Sort.Order.desc("createDate"));
 
-        Pageable pageable = PageRequest.of(page, 10, Sort.by(sorts));
-        Specification<Question> spec = search(kw);
+        Pageable pageable = PageRequest.of(page, 5, Sort.by(sorts));
+        // Specification<Question> spec = search(kw);
         // 자바 코드로 쿼리 생성
         // return this.questionRepository.findAll(spec, pageable);
 
@@ -137,4 +137,5 @@ public class QuestionService {
             }
         };
     }
+
 }

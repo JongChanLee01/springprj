@@ -1,6 +1,8 @@
 package com.sbb.repository;
 
 import com.sbb.entity.Answer;
+import com.sbb.entity.Question;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -15,4 +17,7 @@ public interface AnswerRepository extends JpaRepository<Answer, Integer> {
             + "where u.username = :username "
             + "order by a.createDate desc ")
     List<Answer> findCurrentAnswer(@Param("username") String username, Pageable pageable);
+
+
+    Page<Answer> findAllByQuestion(Question question, Pageable pageable);
 }
