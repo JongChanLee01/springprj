@@ -67,8 +67,8 @@ public class CityService {
         if (pagination.getSt().length() == 0) {
             page = cityReopsitory.findAll(pageRequest);
         } else {
-            page = cityReopsitory.findByNameStartsWith(
-                    pagination.getSt(), pageRequest
+            page = cityReopsitory.findByNameStartsWithOrDistrictDistrictNameStartsWith(
+                    pagination.getSt(), pagination.getSt(), pageRequest
             );
         }
         pagination.setRecordCount((int)page.getTotalElements());
