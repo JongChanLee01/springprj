@@ -12,6 +12,6 @@ public interface CityReopsitory extends JpaRepository<City, Integer> {
     City findByName(String name);
 
     Page<City> findByNameStartsWith(
-            String name,  Pageable pageable
+            String name, Pageable pageable
     );
 }

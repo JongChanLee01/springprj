@@ -19,11 +19,15 @@ function pagination() {
     let currentPage = parseInt(div.getAttribute("data-current-page"));
     let pageCount = Math.ceil(recordCount / pageSize);
     if (currentPage > pageCount) currentPage = pageCount;
+
     let url = location.href;
     if (url.indexOf("pg=") < 0)
         url = url + (url.indexOf("?") < 0 ? "?pg=1" : "&pg=1");
     let table = document.createElement("table");
     let tr = document.createElement("tr");
+
+    if (currentPage < 1) currentPage = 1;
+
     let baseNo = Math.floor((currentPage - 1) / 10) * 10;
     if (baseNo > 0) tr.appendChild(createPageTd(baseNo, "<", url));
     for (let i = 1; i <= 10; ++i) {
