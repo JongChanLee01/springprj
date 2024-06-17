@@ -20,7 +20,7 @@ public class SecurityConfig{
         http.authorizeRequests((requests) ->
                requests
                    .requestMatchers("/css/**", "/js/**", "/imgs/**").permitAll()
-                   .requestMatchers("/", "/members/**", "/item/**", "/images/**","/mail/**").permitAll()
+                   .requestMatchers("/", "/service/**","/members/**", "/item/**", "/images/**","/mail/**").permitAll()
                    .requestMatchers("/admin/**").hasRole("ADMIN")
                    .anyRequest().authenticated()
         );

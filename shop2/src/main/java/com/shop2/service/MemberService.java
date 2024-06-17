@@ -2,8 +2,10 @@ package com.shop2.service;
 
 import com.shop2.dto.MemberUpdateDto;
 import com.shop2.entity.Member;
+import com.shop2.exception.DataNotFoundException;
 import com.shop2.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -13,6 +15,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -79,5 +83,24 @@ public class MemberService implements UserDetailsService {
         memberRepository.save(member);
 
         return member.getId();
+    }
+
+    // 회원 정보 가져오기
+    // public Member getUser(String email){
+    //     Member member = this.memberRepository.findByEmail(email);
+    //
+    //     if (member!=null){
+    //         return member;
+    //     } else {
+    //         throw new DataNotFoundException("member not found");
+    //     }
+    // }
+    public Member getUser(String email){
+        Optional<Member> member = this.memberRepository.findByEmail2(email);
+        if (member.isPresent()){
+            return member.get();
+        } else {
+            throw new DataNotFoundException("siteuser not found");
+        }
     }
 }

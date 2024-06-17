@@ -2,6 +2,7 @@ package com.shop2.repository;
 
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.StringPath;
 import com.querydsl.core.types.dsl.Wildcard;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.shop2.constant.ItemSellStatus;
@@ -11,6 +12,7 @@ import com.shop2.dto.QMainItemDto;
 import com.shop2.entity.Item;
 import com.shop2.entity.QItem;
 import com.shop2.entity.QItemImg;
+import com.shop2.exception.DataNotFoundException;
 import jakarta.persistence.EntityManager;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -83,6 +85,7 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom{
                 .fetchOne()
                 ;   return new PageImpl<>(content, pageable, total);
     }
+
 
     // private BooleanExpression itemNmLike(String searchQuery){
     //     return StringUtils.isEmpty(searchQuery) ? null : QItem.item.itemNm.like("%" + searchQuery + "%");
