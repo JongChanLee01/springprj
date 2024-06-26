@@ -12,7 +12,4 @@ public class District {
 
     @Column(length = 45)
     private String districtName;
-
-    private Integer population;
-    private Integer area;
 }
